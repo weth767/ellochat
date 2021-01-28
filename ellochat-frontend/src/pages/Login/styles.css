@@ -1,3 +1,32 @@
-img {
-    fill: #ff5757;
+.login-content{
+    width: 100vw;
+    height: 100vh;
+    padding: 5%;
+    margin: auto;
+    background-color: var(color-icewhite);
+}
+
+.btn-login{
+    width: 100%;
+    background-color: var(--color-blue);
+    color: var(--color-white);
+}
+
+.btn-login:hover{
+    color: var(--color-blue);
+    background-color: var(--color-white);
+}
+
+.card{
+    background-color: var(--color-icewhite);
+    padding: 50px;
+    border-style: solid;
+    border-color: var(--color-blue);
+}
+
+.text-blue{
+    color: var(--color-blue);
+}
+a{
+    text-decoration: none;
 }
