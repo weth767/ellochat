@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Routes from './routes';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -11,6 +12,7 @@ function App() {
       <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Login}/>
+        <Route exact path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
         <Route path="/home" component={Home}/>
       </Switch>
