@@ -59,7 +59,7 @@ export default function Login() {
                         <div className="col-md-12 d-flex align-items-center flex-column">    
                             <div className="col-md-10 d-flex justify-content-between">
                                 <div><Link to ="#" className="mx-2 text-blue">Esqueci minha senha</Link></div>
-                                <div><Link to ="#" className="mx-2 text-blue">Cadastre-se agora</Link></div>
+                                <div><Link to ="/register" className="mx-2 text-blue">Cadastre-se agora</Link></div>
                             </div>
                         </div>
                     </div>

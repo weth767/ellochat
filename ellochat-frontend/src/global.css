@@ -1,7 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300;400&display=swap');
 
-:root{
+:root {
     --color-blue: #003366;
     --color-black: #000;
     --color-lightblue: #0892D0;
@@ -10,10 +10,10 @@
     --color-gray: #EBEBEB;
     --color-white: #FFF;
 }
+
 * {
     margin: 0;
     padding: 0;
     outline: 0;
-    box-sizing: border-box;
-   
+    box-sizing: border-box;   
 }
