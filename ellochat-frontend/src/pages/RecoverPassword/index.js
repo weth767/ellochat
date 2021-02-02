@@ -1,6 +1,5 @@
 import React,{useState} from 'react';
-import { Link, Redirect} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
+import { Link } from 'react-router-dom';
 import 'firebase/auth'
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
@@ -24,14 +23,12 @@ export default function Recover() {
 
     
     function handleRecover() {
-        console.log(email);
         setBlocking(true);
         firebase.auth()
         .sendPasswordResetEmail(email)
         .then(() => {
             NotificationManager.success('Link Enviado para o E-mail!', 'Sucesso',1000);
-        }).catch((error) => {
-            console.log(error);
+        }).catch(() => {
             NotificationManager.warning('Verifique se o E-mail digitado é válido!', 'Erro',1000);
         }).finally(() => {
             setBlocking(false);

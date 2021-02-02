@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
-import { Link, Redirect} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
-import 'firebase/auth'
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import 'firebase/auth';
+import firebase from '../../config/firebase'
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import "react-notifications/lib/notifications.css";
@@ -11,7 +12,6 @@ import {
 } from "react-notifications";
 
 import Logo from "../../assets/ellochat-banner.png";
-import firebase from '../../config/firebase'
 import './styles.css';
 
 
@@ -24,20 +24,20 @@ export default function Login() {
     const [blocking, setBlocking] = useState(false);
 
     const dispatch = useDispatch();
+    const history = useHistory();
     
     function handleLogin() {
         setBlocking(true);
         firebase.auth()
         .signInWithEmailAndPassword(email,senha)
         .then(() => {
-            console.log("aasd");
             dispatch({
                 type:'LOG_IN',
                 payload:{
                     usuarioEmail:email
                 }
-            })
-            
+            });
+            history.push("/home");
         }).catch(() => {
             NotificationManager.warning("Erro ao realizar o login, verifique suas credenciais!", "Erro", 1000);
         }).finally(() => {
@@ -70,7 +70,7 @@ export default function Login() {
                         <div className="row">
                             <div className="col-md-12 d-flex align-items-center flex-column">    
                                 <div className="col-md-10 d-flex justify-content-between">
-                                    <div><Link to ="/recover" className="mx-2 text-blue">Esqueci minha senha</Link></div>
+                                    <div><Link to ="/recover_password" className="mx-2 text-blue">Esqueci minha senha</Link></div>
                                     <div><Link to ="/register" className="mx-2 text-blue">Cadastre-se agora</Link></div>
                                 </div>
                             </div>
