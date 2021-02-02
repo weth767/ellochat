@@ -64,20 +64,20 @@ export default function Register() {
       <img src={Logo} className="register-logo" />
       <form className="register-form">
         <div className="register-card">
-          <h1 className="register-title">Cadastrar</h1>
-          <input type="text" id="username" className="register-input"
+          <h1 className="register-title">Cadastre-se no Ellochat</h1>
+          <input type="text" id="username" className="form-control register-input"
             placeholder="Digite seu nome de usuário"
             onChange={(event) => setUsername(event.target.value)}
           />
-          <input type="email" id="email" className="register-input"
+          <input type="email" id="email" className="form-control register-input"
             placeholder="Digite seu e-mail"
             onChange={(event) => setEmail(event.target.value)}
           />
-          <InputMask mask="(99) 99999-9999" id="phone" className="register-input"
+          <InputMask mask="(99) 99999-9999" id="phone" className="form-control register-input"
             placeholder="Digite seu telefone"
             onChange={(event) => setPhone(event.target.value)}
           />
-          <input type="password" id="password" className="register-input"
+          <input type="password" id="password" className="form-control register-input"
             placeholder="Digite sua senha"
             onChange={(event) => setPassword(event.target.value)}
           />
