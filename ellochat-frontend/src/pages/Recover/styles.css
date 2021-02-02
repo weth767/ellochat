@@ -1,4 +1,4 @@
-.login-content{
+.recover-content{
     width: 100vw;
     height: 100vh;
     padding: 5%;
@@ -11,13 +11,15 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.btn-login{
+.btn-recover{
     width: 100%;
     background-color: var(--color-blue);
     color: var(--color-white);
+    margin-bottom: 1vh;
+
 }
 
-.btn-login:hover{
+.btn-recover:hover{
     color: var(--color-blue);
     background-color: var(--color-white);
     border: 2px solid var(--color-blue);
@@ -35,31 +37,29 @@
     color: var(--color-blue);
 }
 
-.login-input {
+.recover-input {
     width: 100%;
     border: 1px solid var(--color-blue);
     padding: 2px 10px;
-    border-radius: 5px;
     margin-bottom: 1vh;
+    border-radius: 6px;
 }
 
-.login-input:focus {
+.recover-input:focus {
     border-color: var(--color-blue);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--color-blue);
 }
 
-.login-logo {
+.recover-logo {
     max-width: 80vw;
     margin-bottom: 5vh;
 }
 @media(min-width: 768px) {
-    .login-logo {
+    .recover-logo {
         max-width: 30vw;
         margin-bottom: 5vh;
     }
 }
-
-
 
 a{
     text-decoration: none;
