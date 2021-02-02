@@ -1,0 +1,6 @@
+.footer {
+    background-color: transparent;
+    width: 100vw;
+    height: 8vh;
+    color: var(--color-blue);
+}

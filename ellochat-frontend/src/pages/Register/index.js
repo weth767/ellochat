@@ -12,6 +12,8 @@ import {
 } from "react-notifications";
 import { Link, useHistory } from "react-router-dom";
 import InputMask from "react-input-mask";
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -61,6 +63,7 @@ export default function Register() {
 
   return (
     <BlockUi tag="div" className="register-content" blocking={blocking}>
+      <Header/>
       <img src={Logo} className="register-logo" />
       <form className="register-form">
         <div className="register-card">
@@ -93,6 +96,7 @@ export default function Register() {
           </div>
         </div>
       </form>
+      <Footer/>
       <NotificationContainer />
     </BlockUi>
   );
