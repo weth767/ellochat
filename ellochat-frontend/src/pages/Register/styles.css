@@ -22,16 +22,26 @@
         width: 40vw;
         padding: 2vh 6vw;
     }
+
+    .register-logo {
+        width: 20vw;
+    }
+
+    .register-title {
+        font-size: 32px;
+    }
+    
 }
 
 .register-title {
     color: var(--color-blue);
     font-weight: bold;
-    font-size: 32px;
+    font-size: 20px;
 }
 
 .register-logo {
-    width: 20vw;
+    margin-top: 5vh;
+    max-width: 35vw;
     margin-bottom: 5vh;
 }
 

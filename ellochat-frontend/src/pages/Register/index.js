@@ -37,7 +37,8 @@ export default function Register() {
             username: username,
             email: email,
             phone: phone,
-            password: password,
+            contacts: [],
+            status: ""
           }).then(() => {
             NotificationManager.success(
               "Usuário cadastrado com sucesso", "Sucesso!",
