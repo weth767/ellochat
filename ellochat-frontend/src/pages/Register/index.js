@@ -14,6 +14,7 @@ import { Link, useHistory } from "react-router-dom";
 import InputMask from "react-input-mask";
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import Messages from '../../constants/messages';
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -42,20 +43,20 @@ export default function Register() {
           }).then(() => {
             NotificationManager.success(
               "Usuário cadastrado com sucesso", "Sucesso!",
-              500, () => {});
+              1000, () => {});
               history.push("/home");
           }, (error) => {
-            NotificationManager.warning(
-              "Erro ao realizar o cadastro do usuário, tente novamente!", "Erro",
-              500, () => { }
+            NotificationManager.error(
+              Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
+              1000, () => { }
             );
           }).finally(() => {
             setBlocking(false);
           });
       }, (error) => {
-        NotificationManager.warning(
-          "Endereço de e-mail já cadastrado", "Erro",
-          500, () => { }
+        NotificationManager.error(
+          Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
+          1000, () => { }
         );
       }).finally(() => {
         setBlocking(false);
