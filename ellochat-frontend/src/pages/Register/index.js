@@ -36,6 +36,7 @@ export default function Register() {
           .ref(`users/${result.user.uid}`)
           .set({
             username: username,
+            nickname: "",
             email: email,
             phone: phone,
             contacts: [],
@@ -43,8 +44,8 @@ export default function Register() {
           }).then(() => {
             NotificationManager.success(
               "Usuário cadastrado com sucesso", "Sucesso!",
-              1000, () => {});
-              history.push("/home");
+              1000, () => { });
+            history.push("/home");
           }, (error) => {
             NotificationManager.error(
               Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
@@ -65,8 +66,8 @@ export default function Register() {
 
   return (
     <BlockUi tag="div" className="register-content" blocking={blocking}>
-      <Header/>
-      <img src={Logo} className="register-logo" />
+      <Header />
+      <img src={Logo} className="register-logo" alt="Banner Ellochat"/>
       <form className="register-form">
         <div className="register-card">
           <h1 className="register-title">Cadastre-se no Ellochat</h1>
@@ -92,13 +93,13 @@ export default function Register() {
             Cadastrar
           </button>
           <div className="register-options">
-            <Link to="/" className="register-link">
+            <Link to="/login" className="register-link">
               Tenho uma conta
             </Link>
           </div>
         </div>
       </form>
-      <Footer/>
+      <Footer />
       <NotificationContainer />
     </BlockUi>
   );

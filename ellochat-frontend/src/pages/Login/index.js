@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import 'firebase/auth';
@@ -7,42 +7,49 @@ import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import "react-notifications/lib/notifications.css";
 import {
-  NotificationContainer,
-  NotificationManager,
+    NotificationContainer,
+    NotificationManager,
 } from "react-notifications";
 
 import Logo from "../../assets/ellochat-banner.png";
 import './styles.css';
 
-
-
 export default function Login() {
 
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [password, setPassword] = useState('');
 
     const [blocking, setBlocking] = useState(false);
 
     const dispatch = useDispatch();
     const history = useHistory();
-    
+
+    const database = firebase.database();
+
     function handleLogin() {
         setBlocking(true);
         firebase.auth()
-        .signInWithEmailAndPassword(email,senha)
-        .then(() => {
-            dispatch({
-                type:'LOG_IN',
-                payload:{
-                    usuarioEmail:email
-                }
+            .signInWithEmailAndPassword(email, password)
+            .then((result) => {
+                database.ref(`users/${result.user.uid}`)
+                    .on('value', snapshot => {
+                        dispatch({
+                            type: 'LOGIN',
+                            payload: {
+                                userEmail: email,
+                                username: snapshot.val().nickname === "" ?
+                                    snapshot.val().username :
+                                    snapshot.val().nickname,
+                                token: "" //resolver o token
+                            }
+                        });
+                        history.push("/");
+                    });
+            }).catch(() => {
+                NotificationManager.error("Erro ao realizar o login, verifique suas credenciais!", "Erro", 1000);
+            }).finally(() => {
+                setBlocking(false);
             });
-            history.push("/home");
-        }).catch(() => {
-            NotificationManager.warning("Erro ao realizar o login, verifique suas credenciais!", "Erro", 1000);
-        }).finally(() => {
-            setBlocking(false);
-        });
     }
 
     return (
@@ -52,15 +59,15 @@ export default function Login() {
                     <img src={Logo} className="login-logo" alt=""></img>
                     <div className="card">
                         <div className="row">
-                            <div className="col-md-12 d-flex align-items-center flex-column">    
+                            <div className="col-md-12 d-flex align-items-center flex-column">
                                 <h3 className="h3 mb-3 font-weight-bold text-blue"> Conectar-se </h3>
                                 <div className="col-12 col-md-10 ">
-                                    <input type="email" className="form-control login-input text-blue" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail" 
-                                    onChange={e => setEmail(e.target.value)} />
+                                    <input type="email" className="form-control login-input text-blue" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail"
+                                        onChange={e => setEmail(e.target.value)} />
                                 </div>
                                 <div className="col-12 col-md-10 ">
                                     <input type="password" className="form-control login-input text-blue" id="inputPassowrd" placeholder="Senha"
-                                        onChange={e => setSenha(e.target.value)}/>
+                                        onChange={e => setPassword(e.target.value)} />
                                 </div>
                                 <div className="col-12 col-md-10 ">
                                     <button type="button" className="btn btn-lg btn-login btn-block" onClick={handleLogin} >Entrar</button>
@@ -68,10 +75,10 @@ export default function Login() {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-md-12 d-flex align-items-center flex-column">    
+                            <div className="col-md-12 d-flex align-items-center flex-column">
                                 <div className="col-md-10 d-flex justify-content-between">
-                                    <div><Link to ="/recover_password" className="mx-2 text-blue">Esqueci minha senha</Link></div>
-                                    <div><Link to ="/register" className="mx-2 text-blue">Cadastre-se agora</Link></div>
+                                    <div><Link to="/recoverypass" className="mx-2 text-blue">Esqueci minha senha</Link></div>
+                                    <div><Link to="/register" className="mx-2 text-blue">Cadastre-se agora</Link></div>
                                 </div>
                             </div>
                         </div>
