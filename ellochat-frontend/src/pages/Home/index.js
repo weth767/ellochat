@@ -6,7 +6,7 @@ import ContactGroupList from '../../components/ContactGroupList';
 
 export default function Home() {
     return (
-        <div class="homegrid">
+        <div className="homegrid">
            <UserInfo/>
            <ChatComponent/>
            <ContactGroupList/>

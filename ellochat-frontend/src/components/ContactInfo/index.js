@@ -12,7 +12,7 @@ export default function ContactInfo(props) {
                         <MdAccountCircle color="black" className="user-icon" />
                     }
                 </div>
-                <div class="contact-text">
+                <div className="contact-text">
                     <h2 className="card-title">{props.contactName}</h2>
                     <span className="card-text">{props.lastMessage}</span>
                 </div>
