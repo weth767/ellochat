@@ -1,0 +1,16 @@
+
+/* 
+UI - User Info
+CGL - Contact/Group List
+CC - Chat Component
+ */
+.homegrid {  
+    display: grid;
+    grid-template-columns: 300px auto;
+    grid-template-rows: 100px auto 90px;
+    grid-template-areas: 
+        'UI CC'
+        'CGL CC'
+        'CGL CC';
+    height: 100vh;
+}

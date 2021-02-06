@@ -1,15 +1,15 @@
 import React from 'react';
 import './styles.css';
-import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import UserInfo from '../../components/UserInfo';
+import ChatComponent from '../../components/ChatComponent';
+import ContactGroupList from '../../components/ContactGroupList';
 
 export default function Home() {
     return (
-        <>
-        {useSelector(state => state.user.userLogged) === false ? <Redirect to="/login"></Redirect> : null}
-            <div>
-                <h1>Home</h1>
-            </div>
-        </>
+        <div class="homegrid">
+           <UserInfo/>
+           <ChatComponent/>
+           <ContactGroupList/>
+        </div>
     );
 }

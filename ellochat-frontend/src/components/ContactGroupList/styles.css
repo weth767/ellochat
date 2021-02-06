@@ -1,0 +1,15 @@
+.contact-group-list {
+    grid-area: CGL;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: scroll;
+    background: var(--color-blue);
+    border: 1px solid var(--color-gray);
+}
+
+.contact-group-list::-webkit-scrollbar {
+    display: none;
+  }

@@ -1,0 +1,44 @@
+.user-info {
+    grid-area: UI;
+    display: flex;
+    max-width: 300px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--color-blue);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 0px 0px;
+    border: 1px solid var(--color-gray);
+}
+
+.user-avatar {
+    color: var(--color-white);
+}
+
+.user-avatar span {
+    margin-left: 2vw;
+}
+
+.user-icon {
+    width: 3vw;
+    height: 3vw;
+}
+
+.settings {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.settings-icon {
+    width: 2vw;
+    height: 2vw;
+}
+
+.settings:active {
+    box-shadow:none;
+}
+
+.settings-icon:hover {
+    fill: var(--color-gray);
+    opacity: 0.6;
+}
