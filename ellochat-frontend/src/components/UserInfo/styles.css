@@ -23,6 +23,11 @@
     height: 3vw;
 }
 
+.setting-group{
+    display: flex;
+    
+}
+
 .settings {
     border: 0;
     background: transparent;

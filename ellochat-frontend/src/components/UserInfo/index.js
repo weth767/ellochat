@@ -14,13 +14,19 @@ export default function UserInfo() {
                 }
                 <span>{userData.username}</span>
             </div>
-            <div>
+            <div className="setting-group">
                 <button className="settings" type="button">
                     <MdChat color="white" className="settings-icon"/>
                 </button>
-                <button className="settings" type="button">
-                    <MdMoreVert color="white" className="settings-icon"/>
-                </button>
+                <div className="dropdown">
+                    <button className="settings" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <MdMoreVert color="white" className="settings-icon" />
+                    </button>
+                    
+                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a className="dropdown-item">Sair</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     );
