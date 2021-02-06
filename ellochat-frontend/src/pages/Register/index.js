@@ -15,33 +15,46 @@ import InputMask from "react-input-mask";
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Messages from '../../constants/messages';
+import { useDispatch } from 'react-redux';
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
 
   const history = useHistory();
   const [blocking, setBlocking] = useState(false);
 
   const database = firebase.database();
+  const dispatch = useDispatch();
+
+  async function generateToken(uid) {
+      await setToken("");
+  }
 
   function handleNewUser() {
     setBlocking(true);
     firebase.auth()
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        database
-          .ref(`users/${result.user.uid}`)
-          .set({
+        database.ref(`users/${result.user.uid}`).set({
             username: username,
             nickname: "",
             email: email,
             phone: phone,
-            contacts: [],
             status: ""
           }).then(() => {
+            generateToken(result.user.uid);
+            dispatch({
+              type: 'LOGIN',
+              payload: {
+                userEmail: email,
+                username: username,
+                token: token //resolver o token
+              }
+            });
             NotificationManager.success(
               "Usuário cadastrado com sucesso", "Sucesso!",
               1000, () => { });
@@ -67,7 +80,7 @@ export default function Register() {
   return (
     <BlockUi tag="div" className="register-content" blocking={blocking}>
       <Header />
-      <img src={Logo} className="register-logo" alt="Banner Ellochat"/>
+      <img src={Logo} className="register-logo" alt="Banner Ellochat" />
       <form className="register-form">
         <div className="register-card">
           <h1 className="register-title">Cadastre-se no Ellochat</h1>

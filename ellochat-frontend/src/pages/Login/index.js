@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useHistory, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import 'firebase/auth';
 import firebase from '../../config/firebase'
 import BlockUi from "react-block-ui";
@@ -54,6 +54,7 @@ export default function Login() {
 
     return (
         <BlockUi tag="div" blocking={blocking}>
+            {useSelector(state => state.user.userLogged) === true ? <Redirect to="/"></Redirect> : null}
             <div className="login-content text-center">
                 <form className="mx-auto col-sm-12 col-md-8 col-lg-5">
                     <img src={Logo} className="login-logo" alt=""></img>
