@@ -1,0 +1,8 @@
+.chat {
+    grid-area: CC;
+}
+
+.chat img {
+    width: 100%;
+    height: 100vh;
+}

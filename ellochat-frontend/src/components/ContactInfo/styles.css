@@ -3,6 +3,7 @@
     height: 10vh;
     padding: 0;
     margin-bottom: 1vh;
+    cursor: pointer;
 }
 
 .contact-info:first-child {
