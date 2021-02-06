@@ -1,0 +1,14 @@
+.header {
+    background-color: transparent;
+    width: 95vw;
+    height: 8vh;
+    color: var(--color-blue);
+    font-size: 3vh;
+    margin-bottom: 4vh;
+}
+
+@media (min-width: 768px) {
+    .header {
+        font-size: 26px;
+    }
+}
