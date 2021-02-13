@@ -1,6 +1,7 @@
 
 const INITIAL_STATE = {
     userLogged: false,
+    userUuid:null,
     userEmail: "",
     username: "",
     token: null
@@ -12,6 +13,7 @@ export default function UserReducer(state = INITIAL_STATE, action){
             return {
                 ...state,
                 userLogged: true,
+                userUuid: action.payload.userUuid,
                 userEmail: action.payload.userEmail,
                 username: action.payload.username,
                 token: action.payload.token
@@ -19,6 +21,7 @@ export default function UserReducer(state = INITIAL_STATE, action){
         case 'LOGOUT':
             return {
                 ...state,
+                userUuid:null,
                 userLogged: false,
                 userEmail: "",
                 username: "",

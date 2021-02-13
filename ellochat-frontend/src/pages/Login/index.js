@@ -33,9 +33,11 @@ export default function Login() {
             .then((result) => {
                 database.ref(`users/${result.user.uid}`)
                     .on('value', snapshot => {
+                        console.log(result.user.uid);
                         dispatch({
                             type: 'LOGIN',
                             payload: {
+                                userUuid: result.user.uid,
                                 userEmail: email,
                                 username: snapshot.val().nickname === "" ?
                                     snapshot.val().username :

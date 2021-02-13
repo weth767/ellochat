@@ -50,6 +50,7 @@ export default function Register() {
             dispatch({
               type: 'LOGIN',
               payload: {
+                userUuid: result.user.uid,
                 userEmail: email,
                 username: username,
                 token: token //resolver o token
