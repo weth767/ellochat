@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import firebase from '../../config/firebase';
 
 import PerfilInfo from '../PerfilInfo';
-import AddContact from '../AddContact'
+import AddContact from '../AddContact';
+import NewChat from '../NewChat';
 
 export default function UserInfo() {
     const userData = useSelector(state => state.user);
@@ -17,6 +18,9 @@ export default function UserInfo() {
         dispatch({
             type: 'LOGOUT',
         });
+    }
+
+    function newChat() {
     }
 
     return (
@@ -31,7 +35,7 @@ export default function UserInfo() {
                 </div>
                 <div className="setting-group">
                     <button className="settings" type="button">
-                        <MdChat color="white" className="settings-icon"/>
+                        <MdChat color="white" className="settings-icon" onClick={() => newChat()}/>
                     </button>
                     <div className="dropdown">
                         <button className="settings" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,6 +54,7 @@ export default function UserInfo() {
             </div>
             <PerfilInfo></PerfilInfo>
             <AddContact/>
+            <NewChat/>
         </>
     );
 }
