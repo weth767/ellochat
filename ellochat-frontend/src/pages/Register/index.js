@@ -63,7 +63,7 @@ export default function Register() {
                 NotificationManager.success(
                   "Usuário cadastrado com sucesso", "Sucesso!",
                   1000, () => { });
-                history.push("/home");
+                history.push("/");
             }, (error) => {
                 NotificationManager.error(
                   Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",

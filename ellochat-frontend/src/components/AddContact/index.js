@@ -31,6 +31,10 @@ export default function AddContact() {
                         email: snapshot.val().email,
                         username: snapshot.val().username,
                         nickname: snapshot.val().nickname
+                    }).then(_ => {
+                        NotificationManager.success(
+                            "Contato cadastrado com sucesso", "Sucesso!",
+                            1000, () => {});
                     });
                 }, _ => {
                     NotificationManager.error("Erro ao adicionar o contato", "Erro", 1000, () => {});
