@@ -40,6 +40,11 @@
 .chat-input-wrapper {
     padding: 1vh;
     width: 100%;
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .chat-input-input {

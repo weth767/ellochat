@@ -7,7 +7,7 @@ CC - Chat Component
 .homegrid {  
     display: grid;
     grid-template-columns: 300px auto;
-    grid-template-rows: 80px auto 90px;
+    grid-template-rows: 10vh auto 10vh;
     grid-template-areas: 
         'UI CC'
         'CGL CC'
