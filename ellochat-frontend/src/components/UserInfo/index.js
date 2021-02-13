@@ -1,10 +1,19 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './styles.css';
 import { MdAccountCircle, MdChat, MdMoreVert } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 export default function UserInfo() {
     const userData = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    function logout() {
+        dispatch({
+            type: 'LOGOUT',
+        });
+    }
+
     return (
         <div className="user-info">
             <div className="user-avatar">
@@ -24,7 +33,7 @@ export default function UserInfo() {
                     </button>
                     
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a className="dropdown-item">Sair</a></li>
+                        <li><Link to="/login" className="text-blue dropdown-item" onClick={() => logout()}>Sair</Link></li>
                     </ul>
                 </div>
             </div>

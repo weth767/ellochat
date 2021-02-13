@@ -19,7 +19,10 @@ export default function UserReducer(state = INITIAL_STATE, action){
         case 'LOGOUT':
             return {
                 ...state,
-                INITIAL_STATE
+                userLogged: false,
+                userEmail: "",
+                username: "",
+                token: ""
             };
         default:{
                 return state 
