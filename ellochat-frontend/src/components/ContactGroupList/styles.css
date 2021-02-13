@@ -12,4 +12,8 @@
 
 .contact-group-list::-webkit-scrollbar {
     display: none;
-  }
+}
+
+.contact-group-list-separator {
+    margin-top: 55vh;
+}
