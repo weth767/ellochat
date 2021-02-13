@@ -6,7 +6,7 @@ CC - Chat Component
  */
 .homegrid {  
     display: grid;
-    grid-template-columns: 300px auto;
+    grid-template-columns: 20vw auto;
     grid-template-rows: 10vh auto 10vh;
     grid-template-areas: 
         'UI CC'

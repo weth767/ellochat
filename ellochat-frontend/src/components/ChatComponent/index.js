@@ -16,13 +16,13 @@ export default function ChatComponent(props) {
                 
             </div>
             <div className="chat-input">
-                <div class="chat-input-attach">
-                    <label for="file-input">
+                <div className="chat-input-attach">
+                    <label htmlFor="file-input">
                         <MdAttachFile color="white" className="chat-input-icons"/>
                     </label>
                     <input id="file-input" type="file"/>
                 </div>
-                <div class="chat-input-wrapper">
+                <div className="chat-input-wrapper">
                     <input className="chat-input-input" placeholder="Digite uma mensagem"/>
                 </div>
                 <div className="chat-input-interactions">

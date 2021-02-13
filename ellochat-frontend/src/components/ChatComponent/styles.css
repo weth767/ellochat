@@ -11,7 +11,7 @@
     justify-content: flex-start;
     background-color: var(--color-blue);;
     border: 2px solid var(--color-gray);
-    height: 80px;
+    height: 10vh;
     padding: 1vw;
     color: var(--color-white);
 }
