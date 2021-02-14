@@ -1,3 +1,32 @@
 .modal-header .close {
     display:none;
 }
+
+.contact-info {
+    width: 95%;
+    height: 10vh;
+    padding: 0;
+    margin-bottom: 1vh;
+    cursor: pointer;
+}
+
+.contact-info-content {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.contact-text {
+    margin-left: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.contact-text h2 {
+    font-size: 16px;
+}
+
+.contact-text span {
+    font-size: 12px;
+}

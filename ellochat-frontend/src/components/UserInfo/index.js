@@ -34,9 +34,10 @@ export default function UserInfo() {
                     <span>{userData.username}</span>
                 </div>
                 <div className="setting-group">
-                    <button className="settings" type="button">
+                    <Link to="#newChat" data-toggle="modal" data-target="#newChat" 
+                                className="text-blue dropdown-item new-chat-icon">
                         <MdChat color="white" className="settings-icon" onClick={() => newChat()}/>
-                    </button>
+                    </Link>
                     <div className="dropdown">
                         <button className="settings" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             <MdMoreVert color="white" className="settings-icon" />

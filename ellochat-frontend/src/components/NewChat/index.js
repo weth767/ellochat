@@ -13,12 +13,16 @@ export default function NewChat() {
     const userEmail = useSelector(state => state.user.userEmail);
 
     useEffect(() => {
-        HashGenerator.generateHash(userEmail).then(userEmailHash => {
-            database.ref(`users/${userEmailHash}/contacts`).on('value', (snapshot) => {
-                console.log(snapshot.val());
+        if (Array.isArray(contacts) && contacts.length == 0) {
+            setBlocking(true);
+            HashGenerator.generateHash(userEmail).then(userEmailHash => {
+                database.ref(`users/${userEmailHash}/contacts`).on('value', (snapshot) => {
+                    setContacts(Object.values(snapshot.toJSON()));
+                    setBlocking(false);
+                });
             });
-        });
-    })
+        }
+    });
 
     return (
         <BlockUi tag="div" blocking={blocking}>
@@ -33,8 +37,16 @@ export default function NewChat() {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <div className="row">
-                            </div>
+                            {contacts.map(contact => {
+                                <div className="card contact-info">
+                                    <div className="card-body contact-info-content">
+                                        <div className="contact-text">
+                                            <h2 className="card-title">{contact.nickname ? contact.nickname : contact.username}</h2>
+                                            <span className="card-text">{contact.status}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            })}
                             <div className="modal-footer mt-3 ">
                                 <button type="button" className="btn btn-danger" data-dismiss="modal">Fechar</button>
                             </div>
