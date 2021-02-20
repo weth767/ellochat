@@ -16,6 +16,7 @@ import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Messages from '../../constants/messages';
 import { useDispatch } from 'react-redux';
+import HashGenerator from '../../utils/hash';
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -31,50 +32,53 @@ export default function Register() {
   const dispatch = useDispatch();
 
   async function generateToken(uid) {
-      await setToken("");
+    await setToken("");
   }
 
   function handleNewUser() {
     setBlocking(true);
     firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        database.ref(`users/${result.user.uid}`).set({
-            username: username,
-            nickname: "",
-            email: email,
-            phone: phone,
-            status: ""
-          }).then(() => {
-            generateToken(result.user.uid);
-            dispatch({
-              type: 'LOGIN',
-              payload: {
-                userUuid: result.user.uid,
-                userEmail: email,
+        .createUserWithEmailAndPassword(email, password)
+        .then((result) => {
+            HashGenerator.generateHash(email).then(userEmailHash => {
+            database.ref(`users/${userEmailHash}`).set({
+                uid: result.user.uid,
                 username: username,
-                token: token //resolver o token
-              }
-            });
-            NotificationManager.success(
-              "Usuário cadastrado com sucesso", "Sucesso!",
-              1000, () => { });
-            history.push("/home");
-          }, (error) => {
-            NotificationManager.error(
-              Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
-              1000, () => { }
-            );
-          }).finally(() => {
-            setBlocking(false);
+                name: "",
+                nickname: "",
+                email: email,
+                phone: phone,
+                status: ""
+            }).then(() => {
+                generateToken(result.user.uid);
+                dispatch({
+                    type: 'LOGIN',
+                    payload: {
+                        uid: result.user.uid,
+                        userEmail: email,
+                        username: username,
+                        token: token //resolver o token
+                    }
+                });
+                NotificationManager.success(
+                  "Usuário cadastrado com sucesso", "Sucesso!",
+                  1000, () => { });
+                history.push("/");
+            }, (error) => {
+                NotificationManager.error(
+                  Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
+                1000, () => {});
           });
+        }).finally(() => {
+          setBlocking(false);
+        });
       }, (error) => {
-        NotificationManager.error(
-          Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
-          1000, () => { }
+          NotificationManager.error(
+            Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
+            1000, () => { }
         );
       }).finally(() => {
-        setBlocking(false);
+          setBlocking(false);
       });
   }
 

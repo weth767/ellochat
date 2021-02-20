@@ -17,7 +17,7 @@ export default function ChatComponent(props) {
             </div>
             <div className="chat-input">
                 <div className="chat-input-attach">
-                    <label for="file-input">
+                    <label htmlFor="file-input">
                         <MdAttachFile color="white" className="chat-input-icons"/>
                     </label>
                     <input id="file-input" type="file"/>

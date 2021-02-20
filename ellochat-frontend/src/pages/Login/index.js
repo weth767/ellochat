@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import 'firebase/auth';
-import firebase from '../../config/firebase'
+import firebase from '../../config/firebase';
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import "react-notifications/lib/notifications.css";
@@ -10,7 +10,7 @@ import {
     NotificationContainer,
     NotificationManager,
 } from "react-notifications";
-
+import HashGenerator from '../../utils/hash';
 import Logo from "../../assets/ellochat-banner.png";
 import './styles.css';
 
@@ -30,14 +30,15 @@ export default function Login() {
         setBlocking(true);
         firebase.auth()
             .signInWithEmailAndPassword(email, password)
-            .then((result) => {
-                database.ref(`users/${result.user.uid}`)
+            .then((_) => {
+               HashGenerator.generateHash(email).then(userEmailHash => {
+                     database.ref(`users/${userEmailHash}`)
                     .on('value', snapshot => {
                         console.log(result.user.uid);
                         dispatch({
                             type: 'LOGIN',
                             payload: {
-                                userUuid: result.user.uid,
+                                uid: snapshot.val().uid,
                                 userEmail: email,
                                 username: snapshot.val().nickname === "" ?
                                     snapshot.val().username :
@@ -47,6 +48,7 @@ export default function Login() {
                         });
                         history.push("/");
                     });
+               });
             }).catch(() => {
                 NotificationManager.error("Erro ao realizar o login, verifique suas credenciais!", "Erro", 1000);
             }).finally(() => {
