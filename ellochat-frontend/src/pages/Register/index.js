@@ -54,6 +54,7 @@ export default function Register() {
                 dispatch({
                     type: 'LOGIN',
                     payload: {
+                      userHash:userEmailHash,
                         uid: result.user.uid,
                         userEmail: email,
                         username: username,

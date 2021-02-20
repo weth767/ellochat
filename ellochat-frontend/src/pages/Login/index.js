@@ -37,6 +37,7 @@ export default function Login() {
                         dispatch({
                             type: 'LOGIN',
                             payload: {
+                                userHash:userEmailHash,
                                 uid: snapshot.val().uid,
                                 userEmail: email,
                                 username: snapshot.val().nickname === "" ?
