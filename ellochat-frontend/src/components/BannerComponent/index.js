@@ -3,11 +3,11 @@ import './styles.css';
 import Wallpaper from '../../assets/wallpaper.gif';
 import ChatComponent from '../ChatComponent';
 
-export default function BannerComponent() {
+export default function BannerComponent(props) {
     return (
         <div className="chat">
-            {/* <img src ={Wallpaper} alt="wallpaper"/> */}
-            <ChatComponent contactName="GOKU"/>
+            {!props.contact ? <img src ={Wallpaper} alt="wallpaper"/> : 
+            <ChatComponent contact={props.contact} isNewChat={props.isNewChat}/>}
         </div>
     )
 }

@@ -9,7 +9,7 @@ import PerfilInfo from '../PerfilInfo';
 import AddContact from '../AddContact';
 import ContactList from '../ContactList';
 
-export default function UserInfo() {
+export default function UserInfo({newChatCallback}) {
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
 
@@ -52,7 +52,7 @@ export default function UserInfo() {
             </div>
             <PerfilInfo></PerfilInfo>
             <AddContact/>
-            <ContactList/>
+            <ContactList newChatCallback={newChatCallback}/>
         </>
     );
 }

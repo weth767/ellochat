@@ -1,16 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './styles.css';
 import { MdAccountCircle, MdAttachFile, MdSend, MdMic }  from 'react-icons/md';
+import firebase from "../../config/firebase";
+import BlockUi from "react-block-ui";
+import "react-block-ui/style.css";
 
 export default function ChatComponent(props) {
+
+    const database = firebase.database();
+    
+    useEffect(() => {
+        if (props.isNewChat) {
+            
+        }
+    });
+
     return (
         <div className="chat">
             <div className="chat-header">
-                {props.image ?
-                    <img src={props.image} alt="imagem do usuário" /> :
+                {props.contact.image ?
+                    <img src={props.contact.image} alt="imagem do usuário" /> :
                     <MdAccountCircle color="white" className="user-icon" />
                 }
-                <span>{props.contactName}</span>
+                <span>{props.contact.nickname ? props.contact.nickname 
+                : props.contact.username}</span>
             </div>
             <div className="chat-content">
                 
