@@ -83,15 +83,16 @@ export default function PerfilInfo() {
                                     onChange={(event) => setUsername(event.target.value)} value={username}/>
                             </div>
                             <div className="col-12 col-md-6">
-                                <label for="inputEmail">E-mail</label>
-                                <input type="text" className="form-control text-blue" id="inputEmail" placeholder="E-mail"
-                                    onChange={(event) => setEmail(event.target.value)} value={email}/>
+                                <label for="inputPicture">Foto</label>
+                                <input type="file" id="inputPicture" class="form-control-file"/>
                             </div>
+                            
                         </div>
                         <div className="row mt-3">
                             <div className="col-12 col-md-4">
-                                <label for="inputPicture">Foto</label>
-                                <input type="file" id="inputPicture" class="form-control-file"/>
+                                <label for="inputEmail">E-mail</label>
+                                <input type="text" className="form-control text-blue" id="inputEmail" placeholder="E-mail"
+                                    onChange={(event) => setEmail(event.target.value)} value={email}/>
                             </div>
                             <div className="col-12 col-md-4">
                                 <label for="inputApelido">Apelido</label>
