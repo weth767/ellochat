@@ -46,3 +46,11 @@
     fill: var(--color-gray);
     opacity: 0.6;
 }
+
+.new-chat-icon {
+    background-color: var(--color-blue);
+}
+
+.new-chat-icon:hover {
+    background-color: var(--color-blue);
+}

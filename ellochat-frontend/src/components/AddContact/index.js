@@ -27,10 +27,11 @@ export default function AddContact() {
                     return;
                 }
                 HashGenerator.generateHash(userEmail).then(result => {
-                    database.ref(`users/${result}/contacts`).set({
+                    database.ref(`users/${result}/contacts/${contactHash}`).set({
                         email: snapshot.val().email,
                         username: snapshot.val().username,
-                        nickname: snapshot.val().nickname
+                        nickname: snapshot.val().nickname,
+                        name: snapshot.val().name
                     }).then(_ => {
                         NotificationManager.success(
                             "Contato cadastrado com sucesso", "Sucesso!",
