@@ -7,7 +7,7 @@ import firebase from '../../config/firebase';
 
 import PerfilInfo from '../PerfilInfo';
 import AddContact from '../AddContact';
-import NewChat from '../NewChat';
+import ContactList from '../ContactList';
 
 export default function UserInfo() {
     const userData = useSelector(state => state.user);
@@ -18,9 +18,6 @@ export default function UserInfo() {
         dispatch({
             type: 'LOGOUT',
         });
-    }
-
-    function newChat() {
     }
 
     return (
@@ -34,9 +31,9 @@ export default function UserInfo() {
                     <span>{userData.username}</span>
                 </div>
                 <div className="setting-group">
-                    <Link to="#newChat" data-toggle="modal" data-target="#newChat" 
+                    <Link to="/" data-toggle="modal" data-target="#contactList" 
                                 className="text-blue dropdown-item new-chat-icon">
-                        <MdChat color="white" className="settings-icon" onClick={() => newChat()}/>
+                        <MdChat color="white" className="settings-icon"/>
                     </Link>
                     <div className="dropdown">
                         <button className="settings" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,9 +41,9 @@ export default function UserInfo() {
                         </button>
                         
                         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><Link to="#perfilModal" data-toggle="modal" data-target="#perfilModal" 
+                            <li><Link to="/" data-toggle="modal" data-target="#perfilModal" 
                                 className="text-blue dropdown-item">Perfil</Link></li>
-                            <li><Link to="#addContact" data-toggle="modal" data-target="#addContact" 
+                            <li><Link to="/" data-toggle="modal" data-target="#addContact" 
                                 className="text-blue dropdown-item">Adicionar Contato</Link></li>
                             <li><Link to="/login" className="text-blue dropdown-item" onClick={() => logout()}>Sair</Link></li>
                         </ul>
@@ -55,7 +52,7 @@ export default function UserInfo() {
             </div>
             <PerfilInfo></PerfilInfo>
             <AddContact/>
-            <NewChat/>
+            <ContactList/>
         </>
     );
 }
