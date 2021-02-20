@@ -26,6 +26,13 @@ export default function UserInfo() {
                             image:image
                         }
                     });
+                }).catch(()=>{
+                    dispatch({
+                        type: 'IMAGE',
+                        payload: {
+                            image:null
+                        }
+                    });
                 });
     },[image])
     
