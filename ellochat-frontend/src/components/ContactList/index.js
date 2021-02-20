@@ -3,11 +3,13 @@ import './styles.css';
 import firebase from "../../config/firebase";
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
+import { useHistory } from "react-router-dom";
 import HashGenerator from '../../utils/hash';
 import { useSelector } from 'react-redux';
 
-export default function ContactList() {
+export default function ContactList({newChatCallback}) {
     const database = firebase.database();
+    const history = useHistory();
     const [blocking, setBlocking] = useState(false);
     const [contacts, setContacts] = useState([]);
     const userEmail = useSelector(state => state.user.userEmail);
@@ -16,15 +18,14 @@ export default function ContactList() {
         if (!blocking) {
             HashGenerator.generateHash(userEmail).then(userEmailHash => {
                 database.ref(`users/${userEmailHash}/contacts`).on('value', (snapshot) => {
-                    setContacts(Object.values(snapshot.toJSON()));
+                    let contactsList = snapshot.toJSON();
+                    if (contactsList) {
+                        setContacts(Object.values(contactsList));
+                    }
                 });
             });
         }
     }, [blocking, database, userEmail]);
-
-    function startNewChat(contact) {
-        console.log(contact);
-    }
 
     return (
         <BlockUi tag="div" blocking={blocking}>
@@ -42,7 +43,7 @@ export default function ContactList() {
                             <ul>
                                 {contacts.map(contact => (
                                     <li key={contact.email}>
-                                        <div className="contact-info" onClick={() => startNewChat(contact)}>
+                                        <div className="contact-info" onClick={() => newChatCallback(contact)}>
                                             <div className="card-body contact-info-content">
                                                 <div className="contact-text">
                                                     <h2 className="card-title">{contact.nickname ? contact.nickname : contact.username}</h2>
