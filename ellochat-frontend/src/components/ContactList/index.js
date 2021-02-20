@@ -16,7 +16,10 @@ export default function ContactList() {
         if (!blocking) {
             HashGenerator.generateHash(userEmail).then(userEmailHash => {
                 database.ref(`users/${userEmailHash}/contacts`).on('value', (snapshot) => {
-                    setContacts(Object.values(snapshot.toJSON()));
+                    let contactsList = snapshot.toJSON();
+                    if(contactsList){
+                        setContacts(Object.values(contactsList));
+                    }
                 });
             });
         }
