@@ -116,7 +116,8 @@ export default function PerfilInfo() {
                             <div className="col-12 col-md-6">
                                 <label htmlFor="inputPicture">Foto</label>
                                 <input type="file" id="inputPicture" className="form-control-file"
-                                    onChange={(e) => setPicture(e.target.files[0])}/>
+                                    onChange={(e) => setPicture(e.target.files[0])}
+                                    accept="image/png, image/jpeg"/>
                             </div>
                             
                         </div>
