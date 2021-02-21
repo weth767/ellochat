@@ -22,6 +22,50 @@
 
 .chat-content {
     height: 80vh;
+    overflow-y: scroll;
+}
+
+.chat-content::-webkit-scrollbar {
+    display: none;
+}
+
+.chat-content ul {
+    list-style: none;
+}
+
+.chat-content ul > li {
+    margin-top: 1vh;
+}
+
+.chat-content-sender {
+    margin-bottom: 2vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.chat-content-sender-text {
+    padding: 1.5vh;
+    border-radius: 5px;
+    text-align: left;
+    background-color: var(--color-lightblue);
+    color: var(--color-white);
+}
+
+.chat-content-receiver {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 2vh;
+    margin-right: 1vw;
+}
+
+.chat-content-receiver-text {
+    padding: 1.5vh;
+    border-radius: 5px;
+    text-align: right;
+    background-color: var(--color-blue);
+    color: var(--color-white);
 }
 
 .chat-input {

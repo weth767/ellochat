@@ -24,6 +24,7 @@ export default function AddContact() {
             database.ref(`users/${contactHash}`).on('value', snapshot => {
                 if (!snapshot.val()) {
                     NotificationManager.error("E-mail do contato não encontrado", "Erro", 1000, () => {});
+                    setBlocking(false);
                     return;
                 }
                 HashGenerator.generateHash(userEmail).then(result => {
@@ -32,7 +33,7 @@ export default function AddContact() {
                         username: snapshot.val().username,
                         nickname: snapshot.val().nickname,
                         name: snapshot.val().name
-                    }).then(_ => {
+                    }).then( _ => {
                         NotificationManager.success(
                             "Contato cadastrado com sucesso", "Sucesso!",
                             1000, () => {});
