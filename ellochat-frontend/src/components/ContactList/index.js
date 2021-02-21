@@ -19,7 +19,7 @@ export default function ContactList({newChatCallback}) {
             HashGenerator.generateHash(userEmail).then(userEmailHash => {
                 database.ref(`users/${userEmailHash}/contacts`).on('value', (snapshot) => {
                     let contactsList = snapshot.toJSON();
-                    if (contactsList) {
+                    if(contactsList){
                         setContacts(Object.values(contactsList));
                     }
                 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './styles.css';
 import { MdAccountCircle, MdChat, MdMoreVert } from 'react-icons/md';
@@ -10,8 +10,30 @@ import AddContact from '../AddContact';
 import ContactList from '../ContactList';
 
 export default function UserInfo({newChatCallback}) {
+    const [image, setImage] = useState();
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
+
+
+    useEffect(()=>{
+        firebase.storage().ref(`users-pictures/${userData.userEmail}`).getDownloadURL()
+                .then(image => {
+                    dispatch({
+                        type: 'IMAGE',
+                        payload: {
+                            image:image
+                        }
+                    });
+                }).catch(()=>{
+                    dispatch({
+                        type: 'IMAGE',
+                        payload: {
+                            image:null
+                        }
+                    });
+                });
+    },[image])
+    
 
     function logout() {
         firebase.auth().signOut();
@@ -25,7 +47,7 @@ export default function UserInfo({newChatCallback}) {
             <div className="user-info">
                 <div className="user-avatar">
                     {userData.image ? 
-                        <img src={userData.image} alt="imagem do usuário"/> :
+                        <img src={userData.image} alt="imagem do usuário" className="user-icon" /> :
                         <MdAccountCircle color="white" className="user-icon"/>
                     }
                     <span>{userData.username}</span>
@@ -50,7 +72,7 @@ export default function UserInfo({newChatCallback}) {
                     </div>
                 </div>
             </div>
-            <PerfilInfo></PerfilInfo>
+            <PerfilInfo/>
             <AddContact/>
             <ContactList newChatCallback={newChatCallback}/>
         </>
