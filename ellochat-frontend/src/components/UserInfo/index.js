@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './styles.css';
 import { MdAccountCircle, MdChat, MdMoreVert } from 'react-icons/md';
@@ -10,29 +10,32 @@ import AddContact from '../AddContact';
 import ContactList from '../ContactList';
 
 export default function UserInfo({newChatCallback}) {
-    const [image, setImage] = useState();
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
-
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     useEffect(()=>{
-        firebase.storage().ref(`users-pictures/${userData.userEmail}`).getDownloadURL()
-                .then(image => {
-                    dispatch({
-                        type: 'IMAGE',
-                        payload: {
-                            image:image
-                        }
-                    });
-                }).catch(()=>{
-                    dispatch({
-                        type: 'IMAGE',
-                        payload: {
-                            image:null
-                        }
-                    });
+        if (!imageLoaded) {
+            firebase.storage().ref(`users-pictures/${userData.userEmail}`).getDownloadURL()
+            .then(image => {
+                dispatch({
+                    type: 'IMAGE',
+                    payload: {
+                        image:image
+                    }
                 });
-    },[image])
+            }).catch(()=>{
+                dispatch({
+                    type: 'IMAGE',
+                    payload: {
+                        image:null
+                    }
+                });
+            }).finally(() => {
+                setImageLoaded(true);
+            });
+        }
+    },[dispatch, userData, imageLoaded])
     
 
     function logout() {

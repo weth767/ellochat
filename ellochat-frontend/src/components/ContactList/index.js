@@ -3,29 +3,31 @@ import './styles.css';
 import firebase from "../../config/firebase";
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
-import { useHistory } from "react-router-dom";
 import HashGenerator from '../../utils/hash';
 import { useSelector } from 'react-redux';
 
 export default function ContactList({newChatCallback}) {
     const database = firebase.database();
-    const history = useHistory();
     const [blocking, setBlocking] = useState(false);
     const [contacts, setContacts] = useState([]);
     const userEmail = useSelector(state => state.user.userEmail);
+    const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {
-        if (!blocking) {
+        if (!dataLoaded) {
+            setBlocking(true);
             HashGenerator.generateHash(userEmail).then(userEmailHash => {
                 database.ref(`users/${userEmailHash}/contacts`).on('value', (snapshot) => {
                     let contactsList = snapshot.toJSON();
-                    if(contactsList){
+                    if(contactsList) {
                         setContacts(Object.values(contactsList));
+                        setBlocking(false);
+                        setDataLoaded(true);
                     }
                 });
             });
         }
-    }, [blocking, database, userEmail]);
+    }, [blocking, database, userEmail, dataLoaded]);
 
     return (
         <BlockUi tag="div" blocking={blocking}>

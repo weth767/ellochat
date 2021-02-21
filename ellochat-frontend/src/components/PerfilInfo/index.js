@@ -36,7 +36,7 @@ export default function PerfilInfo() {
                 setBlocking(false);
             }
         });
-    }, []);
+    }, [database, userData]);
 
     function save(){
         if(picture){
