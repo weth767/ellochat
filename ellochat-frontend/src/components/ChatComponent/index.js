@@ -72,13 +72,19 @@ export default function ChatComponent(props) {
                 sender: true,
                 message: message,
                 datetime: date.getTime(),
-                viewed: false
+                viewed: false,
+                contact: contact.username,
+                email: contact.email,
+                contactHash: contactHash
             });
             database.ref(`users/${contactHash}/chats/${userHash}/${dateHash}`).set({
                 sender: false,
                 message: message,
                 datetime: date.getTime(),
-                viewed: false       
+                viewed: false,
+                contact: user.username,
+                email: user.email, 
+                contactHash: userHash  
             });
         });
         document.getElementById("input").value = "";

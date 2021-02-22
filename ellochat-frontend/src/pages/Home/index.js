@@ -21,7 +21,7 @@ export default function Home() {
             <div className="homegrid">
             <UserInfo newChatCallback={handleNewChat}/>
             <BannerComponent contact={contact} isNewChat={isNewChat}/>
-            <ContactGroupList/>
+            <ContactGroupList newChatCallback={handleNewChat}/>
             </div>
         </>
     );

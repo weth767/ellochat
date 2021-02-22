@@ -5,7 +5,7 @@ import { MdAccountCircle }  from 'react-icons/md';
 export default function ContactInfo(props) {
     return (
         <div className="card contact-info">
-            <div className="card-body contact-info-content">
+            <div className="card-body contact-info-content" onClick={() => props.onClick()}>
                 <div className="contact-avatar">
                     {props.image ?
                         <img src={props.image} alt="imagem do usuário" /> :

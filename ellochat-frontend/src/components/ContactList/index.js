@@ -48,8 +48,12 @@ export default function ContactList({newChatCallback}) {
                                         <div className="contact-info" onClick={() => newChatCallback(contact)}>
                                             <div className="card-body contact-info-content">
                                                 <div className="contact-text">
-                                                    <h2 className="card-title">{contact.nickname ? contact.nickname : contact.username}</h2>
-                                                    <span className="card-text">{contact.status ? contact.status : "Olá, comecei a usar o Ellochat"}</span>
+                                                    <h2 className="card-title">
+                                                        {contact.nickname ? contact.nickname : contact.username}
+                                                    </h2>
+                                                    <span className="card-text">
+                                                        {contact.status ? contact.status : "Olá, comecei a usar o Ellochat"}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
