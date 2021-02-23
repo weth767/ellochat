@@ -83,7 +83,7 @@ export default function ChatComponent(props) {
                     datetime: date.getTime(),
                     viewed: false,
                     contact: user.username,
-                    email: user.email, 
+                    email: user.userEmail, 
                 }).finally(() => {
                     setBlocking(false);
                     document.getElementById("input").value = "";
