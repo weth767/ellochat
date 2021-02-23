@@ -22,30 +22,29 @@ export default function AddContact() {
         setBlocking(true);
         HashGenerator.generateHash(contactEmail).then((contactHash) => {
             database.ref(`users/${contactHash}`).on('value', snapshot => {
-                if (!snapshot.val()) {
-                    NotificationManager.error("E-mail do contato não encontrado", "Erro", 1000, () => {});
+                let contact = snapshot.val();
+                if (!contact) {
+                    NotificationManager.error("E-mail do contato não encontrado", "Erro", 1000);
                     setBlocking(false);
                     return;
                 }
                 HashGenerator.generateHash(userEmail).then(result => {
                     database.ref(`users/${result}/contacts/${contactHash}`).set({
-                        email: snapshot.val().email,
-                        username: snapshot.val().username,
-                        nickname: snapshot.val().nickname,
-                        name: snapshot.val().name
-                    }).then( _ => {
+                        email: contact.email,
+                        username: contact.username,
+                        nickname: contact.nickname,
+                        name: contact.name
+                    }).then(() => {
                         NotificationManager.success(
                             "Contato cadastrado com sucesso", "Sucesso!",
-                            1000, () => {});
+                            1000);
                     });
-                }, _ => {
-                    NotificationManager.error("Erro ao adicionar o contato", "Erro", 1000, () => {});
+                }, () => {
+                    NotificationManager.error("Erro ao adicionar o contato", "Erro", 1000);
                 }).finally(() => {
                     setBlocking(false);
                 });
             });
-        }).finally(() => {
-            setBlocking(false);
         });
     }
 

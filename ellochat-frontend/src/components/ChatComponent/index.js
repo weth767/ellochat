@@ -67,6 +67,7 @@ export default function ChatComponent(props) {
 
     function sendMessage() {
         const date = new Date();
+        setBlocking(true);
         HashGenerator.generateHash(date.getTime().toString()).then(dateHash => {
             database.ref(`users/${userHash}/chats/${contactHash}/${dateHash}`).set({
                 sender: true,
@@ -75,20 +76,21 @@ export default function ChatComponent(props) {
                 viewed: false,
                 contact: contact.username,
                 email: contact.email,
-                contactHash: contactHash
-            });
-            database.ref(`users/${contactHash}/chats/${userHash}/${dateHash}`).set({
-                sender: false,
-                message: message,
-                datetime: date.getTime(),
-                viewed: false,
-                contact: user.username,
-                email: user.email, 
-                contactHash: userHash  
+            }).finally(() => {
+                database.ref(`users/${contactHash}/chats/${userHash}/${dateHash}`).set({
+                    sender: false,
+                    message: message,
+                    datetime: date.getTime(),
+                    viewed: false,
+                    contact: user.username,
+                    email: user.email, 
+                }).finally(() => {
+                    setBlocking(false);
+                    document.getElementById("input").value = "";
+                    loadData();
+                });
             });
         });
-        document.getElementById("input").value = "";
-        loadData();
     }
 
     return (

@@ -22,12 +22,11 @@ export default function ContactGroupList({newChatCallback}) {
                             chatList.push(Object.values(chat));
                         });
                         setChats(chatList);
-                        console.log(chats);
                     }
                 })
             });
         }
-    });
+    }, [chats, database, user]);
 
     return (
         <div className="contact-group-list">
