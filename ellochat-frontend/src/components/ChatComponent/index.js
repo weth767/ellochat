@@ -5,7 +5,7 @@ import firebase from "../../config/firebase";
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import { useSelector } from 'react-redux';
-import HashGenerator from '../../utils/hash';
+import { messages } from '../../config/firebaseroutes';
 
 export default function ChatComponent(props) {
 
@@ -17,25 +17,15 @@ export default function ChatComponent(props) {
     const [message, setMessage] = useState("");
     const [userHash, setUserHash] = useState("");
     const [contactHash, setContactHash] = useState("");
-    const [messages, setMessages] = useState([]);
     const messagesRef = useRef();
+    const [chats, setChats] = useState(undefined);
     
     useEffect(() => {
-        setIsNewChat(props.isNewChat);
-        if (isNewChat || props.isNewChat) {
-            setMessage([]);
-            setContact(props.contact);    
-            HashGenerator.generateHash(user.userEmail).then((userEmailHash) => {
-                setUserHash(userEmailHash);
-                HashGenerator.generateHash(props.contact.email).then((contactEmailHash) => {
-                    setContactHash(contactEmailHash);
-                    loadData();
+        messages.doc(user.userEmail).collection("contacts")
+                .doc(props.contact.email).collection("messages")
+                .orderBy("datetime", "asc").get().then(async messageData => {
+                    await setChats(messageData.docs.map(doc => doc.data()));
                 });
-            });
-        } else {
-            loadData();
-        }
-        
     }, [props, user, contact, isNewChat]);
 
     function adjustText() {
@@ -59,37 +49,26 @@ export default function ChatComponent(props) {
                     }
                     return -1;
                 })
-                setMessages(messageList);
+                // setMessages(messageList);
                 adjustText();
             }
             setBlocking(false);
         });
     }
 
-    function sendMessage() {
+    async function sendMessage() {
         const date = new Date();
         setBlocking(true);
-        database.ref(`users/${userHash}/chats/${contactHash}`).push({
-            sender: true,
+        const m = {   
+            sender: user.userEmail,
             message: message,
-            datetime: date.getTime(),
-            viewed: false,
-            contact: contact.username,
-            email: contact.email,
-        }).finally(() => {
-            database.ref(`users/${contactHash}/chats/${userHash}`).push({
-                sender: false,
-                message: message,
-                datetime: date.getTime(),
-                viewed: false,
-                contact: user.username,
-                email: user.userEmail, 
-            }).finally(() => {
-                setBlocking(false);
-                document.getElementById("input").value = "";
-                loadData();
-            });
-        });
+            datetime: date.getTime()
+        }
+        await messages.doc(user.userEmail).collection("contacts")
+                .doc(props.contact.email).collection("messages").add(m);
+        await messages.doc(props.contact.email).collection("contacts")
+                .doc(user.userEmail).collection("messages").add(m);
+        setBlocking(false);
     }
 
     return (
@@ -105,9 +84,9 @@ export default function ChatComponent(props) {
                 </div>
                 <div className="chat-content">
                     <ul>
-                        {messages.map(m => (
+                        {chats.map(m => (
                             <li key={m.datetime} ref={messagesRef}
-                                className={m.sender ? 'chat-content-sender' : 'chat-content-receiver'}>
+                                className={m.sender === user.userEmail ? 'chat-content-sender' : 'chat-content-receiver'}>
                                 <span className={m.sender ? 'chat-content-sender-text' :
                                      'chat-content-receiver-text'}>{m.message}</span>
                             </li>

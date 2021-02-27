@@ -37,6 +37,7 @@ export default function Login() {
                         userEmail: email,
                         username: user.username,
                         phone: user.phone,
+                        status: user.status,
                     }
                 });
                 await firebase.storage()

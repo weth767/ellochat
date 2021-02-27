@@ -3,8 +3,8 @@ import './styles.css';
 import firebase from "../../config/firebase";
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
-import HashGenerator from '../../utils/hash';
 import { useSelector } from 'react-redux';
+import { users } from '../../config/firebaseroutes';
 
 export default function ContactList({newChatCallback}) {
     const database = firebase.database();
@@ -16,16 +16,15 @@ export default function ContactList({newChatCallback}) {
     useEffect(() => {
         if (!dataLoaded) {
             setBlocking(true);
-            HashGenerator.generateHash(userEmail).then(userEmailHash => {
-                database.ref(`users/${userEmailHash}/contacts`).on('value', (snapshot) => {
-                    let contactsList = snapshot.toJSON();
-                    if(contactsList) {
-                        setContacts(Object.values(contactsList));
-                        setBlocking(false);
-                        setDataLoaded(true);
-                    }
+            users.doc(userEmail).collection('contacts').get().then((docs) => {
+                let contactList = [];
+                docs.forEach(d => {
+                    users.doc(d.data().email).get().then((contact) => {
+                        contactList.push(contact.data());
+                    })
                 });
-            });
+                setContacts(contactList);
+            })
         }
     }, [blocking, database, userEmail, dataLoaded]);
 
@@ -49,10 +48,13 @@ export default function ContactList({newChatCallback}) {
                                             <div className="card-body contact-info-content">
                                                 <div className="contact-text">
                                                     <h2 className="card-title">
-                                                        {contact.nickname ? contact.nickname : contact.username}
+                                                        {contact.username}
                                                     </h2>
                                                     <span className="card-text">
-                                                        {contact.status ? contact.status : "Olá, comecei a usar o Ellochat"}
+                                                        {
+                                                            contact.status ? contact.status : 
+                                                            "Olá, comecei a usar o Ellochat"
+                                                        }
                                                     </span>
                                                 </div>
                                             </div>

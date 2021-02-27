@@ -3,6 +3,7 @@ const INITIAL_STATE = {
     userLogged: false,
     userEmail: "",
     username: "",
+    status: "",
     uid: null,
     image: null
 }
@@ -16,6 +17,7 @@ export default function UserReducer(state = INITIAL_STATE, action){
                 userEmail: action.payload.userEmail,
                 uid:action.payload.uid,
                 username: action.payload.username,
+                status: action.payload.status,
                 image: action.payload.image
             };
         case 'LOGOUT':
@@ -25,6 +27,7 @@ export default function UserReducer(state = INITIAL_STATE, action){
                 userEmail: "",
                 username: "",
                 image: "",
+                status: "",
                 uid: null,
             };
         case 'IMAGE':

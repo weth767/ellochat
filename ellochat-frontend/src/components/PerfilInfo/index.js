@@ -13,6 +13,7 @@ export default function PerfilInfo() {
     const [username, setUsername] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [status, setStatus] = useState('');
     const [picture, setPicture] = useState();
     const [blocking, setBlocking] = useState(false);
     const userData = useSelector(state => state.user);
@@ -27,6 +28,7 @@ export default function PerfilInfo() {
                 setUsername(user.username);
                 setPhone(user.phone);
                 setEmail(user.email);
+                setStatus(user.status);
             }).finally(() => {
                 setBlocking(false);
             });
@@ -44,12 +46,14 @@ export default function PerfilInfo() {
         await users.doc(userData.userEmail).update({
             username: username,
             phone: phone,
+            status: status,
           }).then(() => {
             dispatch({
                 type: 'LOGIN',
                 payload: {
                     username : username,
-                    phone: phone
+                    phone: phone,
+                    status: status,
                 }
             });
             firebase.storage().ref(`users-pictures/${userData.userEmail}`).getDownloadURL()
@@ -67,7 +71,7 @@ export default function PerfilInfo() {
         }, (error) => {
             NotificationManager.error(
               Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
-              1000, () => { }
+              1000, () => {}
             );
         });;
     }
@@ -124,6 +128,14 @@ export default function PerfilInfo() {
                                     onChange={(event) => setPhone(event.target.value)}
                                     value={phone}
                                 />
+                            </div>
+                        </div>
+                        <div className="row mt-3">
+                            <div className="col-12">
+                                <label htmlFor="inputStatus">Status</label>
+                                <textarea className="form-control w-100" id="inputStatus" rows="3"
+                                    onChange={(event) => setStatus(event.target.value)} value={status}>
+                                </textarea>
                             </div>
                         </div>
                     </div>

@@ -9,39 +9,32 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import HashGenerator from '../../utils/hash';
+import { users } from '../../config/firebaseroutes';
 
 export default function AddContact() {
 
     const [contactEmail, setContactEmail] = useState('');
     const [blocking, setBlocking] = useState(false);
-    const database = firebase.database();
     const userEmail = useSelector(state => state.user.userEmail);
 
-    function addContact() {
+    async function addContact() {
         setBlocking(true);
-        HashGenerator.generateHash(contactEmail).then((contactHash) => {
-            database.ref(`users/${contactHash}`).on('value', snapshot => {
-                let contact = snapshot.val();
-                if (!contact) {
-                    NotificationManager.error("E-mail do contato não encontrado", "Erro", 1000);
-                    setBlocking(false);
-                    return;
-                }
-                HashGenerator.generateHash(userEmail).then(result => {
-                    database.ref(`users/${result}/contacts/${contactHash}`).set({
-                        email: contact.email,
-                        username: contact.username,
-                        nickname: contact.nickname,
-                        name: contact.name
-                    }).then(() => {NotificationManager.success("Contato adicionado com sucesso", "Sucesso", 1000, () => {})})
-                }, () => {
-                    NotificationManager.error("Erro ao adicionar o contato", "Erro", 1000);
+        users.doc(contactEmail).get().then((doc) => {
+            if (doc.exists) {
+                users.doc(userEmail).collection("contacts").add({
+                    email: contactEmail
+                }).then(() => {
+                    NotificationManager.success("Contato adicionado com sucesso");
+                }).catch(() => {
+                    NotificationManager.success("Erro ao adicionar contato");
                 }).finally(() => {
                     setBlocking(false);
                 });
-            });
-        });
+            } else {
+                NotificationManager.success("Erro ao adicionar contato");
+                setBlocking(false);
+            }
+        }); 
     }
 
     return (

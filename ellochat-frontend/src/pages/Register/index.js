@@ -37,6 +37,7 @@ export default function Register() {
       background: 'fff',
       color: '003366',
       rounded: 'true',
+      bold: 'true',
     },
     responseType: 'blob'
   };
@@ -68,6 +69,7 @@ export default function Register() {
             username: username,
             email: email,
             phone: phone,
+            status: "",
           });
           dispatch({
             type: 'LOGIN',
@@ -76,6 +78,7 @@ export default function Register() {
               userEmail: email,
               username: username,
               phone: phone,
+              status: "",
             }
           });
           await generateAvatar();
