@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import InputMask from "react-input-mask";
 import BlockUi from "react-block-ui";
 import { NotificationManager,NotificationContainer } from "react-notifications";
-
+import { users } from '../../config/firebaseroutes';
 import firebase from "../../config/firebase";
 import Messages from '../../constants/messages';
 import './styles.css';
@@ -11,32 +11,27 @@ import './styles.css';
 export default function PerfilInfo() {
 
     const [username, setUsername] = useState('');
-    const [nickname, setNickname] = useState('');
     const [phone, setPhone] = useState('');
-    const [status, setStatus] = useState('');
     const [email, setEmail] = useState('');
     const [picture, setPicture] = useState();
     const [blocking, setBlocking] = useState(false);
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
-
-    const database = firebase.database();
     const storage = firebase.storage();
 
     useEffect(() => {
-        setBlocking(true);
-        database.ref(`users/${userData.userHash}`)
-        .on('value', snapshot => {
-            if(snapshot.val()){
-                setUsername(snapshot.val().username);
-                setNickname(snapshot.val().nickname);
-                setPhone(snapshot.val().phone);
-                setStatus(snapshot.val().status);
-                setEmail(snapshot.val().email);
+        if (email === '') {
+            setBlocking(true);
+            users.where("email", "==", userData.userEmail).get().then((snapshot) => {
+                const user = JSON.parse(snapshot.docs.map(doc => JSON.stringify(doc.data()))[0]);
+                setUsername(user.username);
+                setPhone(user.phone);
+                setEmail(user.email);
+            }).finally(() => {
                 setBlocking(false);
-            }
-        });
-    }, [database, userData]);
+            });
+        }
+    }, [blocking, email, userData]);
 
     function save(){
         if(picture){
@@ -45,19 +40,16 @@ export default function PerfilInfo() {
         return saveUser();
     }
 
-    function saveUser(){
-        database.ref(`users/${userData.uid}`).set({
+    async function saveUser(){
+        await users.doc(userData.userEmail).update({
             username: username,
-            nickname: nickname,
-            email: email,
             phone: phone,
-            status: status
-        }).then(() => {
+          }).then(() => {
             dispatch({
                 type: 'LOGIN',
                 payload: {
-                    userEmail: email,
-                    username: nickname === "" ? username : nickname,
+                    username : username,
+                    phone: phone
                 }
             });
             firebase.storage().ref(`users-pictures/${userData.userEmail}`).getDownloadURL()
@@ -69,7 +61,6 @@ export default function PerfilInfo() {
                     }
                 });
             });
-            
             NotificationManager.success(
             "Perfil alterado com sucesso", "Sucesso!",
             1000, () => { });
@@ -78,7 +69,7 @@ export default function PerfilInfo() {
               Messages.getBrazilianPortgueseMessageRegister(error.code), "Erro",
               1000, () => { }
             );
-        });
+        });;
     }
 
     function saveUserImage(){
@@ -92,7 +83,6 @@ export default function PerfilInfo() {
             }).finally(() => {
                 setBlocking(false);
             });
-
     }
 
     return (
@@ -122,32 +112,18 @@ export default function PerfilInfo() {
                             
                         </div>
                         <div className="row mt-3">
-                            <div className="col-12 col-md-4">
+                            <div className="col-12 col-md-6">
                                 <label htmlFor="inputEmail">E-mail</label>
                                 <input type="text" className="form-control text-blue" id="inputEmail" placeholder="E-mail"
-                                    onChange={(event) => setEmail(event.target.value)} value={email}/>
-                            </div>
-                            <div className="col-12 col-md-4">
-                                <label htmlFor="inputApelido">Apelido</label>
-                                <input type="text" className="form-control text-blue" id="inputApelido" placeholder="Apelido"
-                                    onChange={(event) => setNickname(event.target.value)} value={nickname}/>
-                            </div>
-                            
-                            <div className="col-12 col-md-4">
+                                   readOnly value={email}/>
+                            </div>    
+                            <div className="col-12 col-md-6">
                                 <label htmlFor="phone">Telefone</label>
                                 <InputMask mask="(99) 99999-9999" id="phone" className="form-control"
                                     placeholder=""
                                     onChange={(event) => setPhone(event.target.value)}
                                     value={phone}
                                 />
-                            </div>
-                        </div>
-                        <div className="row mt-3">
-                            <div className="col-12">
-                                <label htmlFor="inputStatus">Status</label>
-                                <textarea className="form-control w-100" id="inputStatus" rows="3"
-                                    onChange={(event) => setStatus(event.target.value)} value={status}>
-                                </textarea>
                             </div>
                         </div>
                     </div>

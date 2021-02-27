@@ -22,7 +22,8 @@ export default function ChatComponent(props) {
     
     useEffect(() => {
         setIsNewChat(props.isNewChat);
-        if (isNewChat) {
+        if (isNewChat || props.isNewChat) {
+            setMessage([]);
             setContact(props.contact);    
             HashGenerator.generateHash(user.userEmail).then((userEmailHash) => {
                 setUserHash(userEmailHash);
@@ -68,27 +69,25 @@ export default function ChatComponent(props) {
     function sendMessage() {
         const date = new Date();
         setBlocking(true);
-        HashGenerator.generateHash(date.getTime().toString()).then(dateHash => {
-            database.ref(`users/${userHash}/chats/${contactHash}/${dateHash}`).set({
-                sender: true,
+        database.ref(`users/${userHash}/chats/${contactHash}`).push({
+            sender: true,
+            message: message,
+            datetime: date.getTime(),
+            viewed: false,
+            contact: contact.username,
+            email: contact.email,
+        }).finally(() => {
+            database.ref(`users/${contactHash}/chats/${userHash}`).push({
+                sender: false,
                 message: message,
                 datetime: date.getTime(),
                 viewed: false,
-                contact: contact.username,
-                email: contact.email,
+                contact: user.username,
+                email: user.userEmail, 
             }).finally(() => {
-                database.ref(`users/${contactHash}/chats/${userHash}/${dateHash}`).set({
-                    sender: false,
-                    message: message,
-                    datetime: date.getTime(),
-                    viewed: false,
-                    contact: user.username,
-                    email: user.userEmail, 
-                }).finally(() => {
-                    setBlocking(false);
-                    document.getElementById("input").value = "";
-                    loadData();
-                });
+                setBlocking(false);
+                document.getElementById("input").value = "";
+                loadData();
             });
         });
     }

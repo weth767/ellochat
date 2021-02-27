@@ -34,11 +34,7 @@ export default function AddContact() {
                         username: contact.username,
                         nickname: contact.nickname,
                         name: contact.name
-                    }).then(() => {
-                        NotificationManager.success(
-                            "Contato cadastrado com sucesso", "Sucesso!",
-                            1000);
-                    });
+                    }).then(() => {NotificationManager.success("Contato adicionado com sucesso", "Sucesso", 1000, () => {})})
                 }, () => {
                     NotificationManager.error("Erro ao adicionar o contato", "Erro", 1000);
                 }).finally(() => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './styles.css';
-import { MdAccountCircle, MdChat, MdMoreVert } from 'react-icons/md';
+import { MdChat, MdMoreVert } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import firebase from '../../config/firebase';
 
@@ -14,28 +14,21 @@ export default function UserInfo({newChatCallback}) {
     const dispatch = useDispatch();
     const [imageLoaded, setImageLoaded] = useState(false);
 
-    useEffect(()=>{
+    useEffect(()=> {
         if (!imageLoaded) {
             firebase.storage().ref(`users-pictures/${userData.userEmail}`).getDownloadURL()
             .then(image => {
                 dispatch({
                     type: 'IMAGE',
                     payload: {
-                        image:image
-                    }
-                });
-            }).catch(()=>{
-                dispatch({
-                    type: 'IMAGE',
-                    payload: {
-                        image:null
+                        image: image
                     }
                 });
             }).finally(() => {
                 setImageLoaded(true);
             });
         }
-    },[dispatch, userData, imageLoaded])
+    },[dispatch, userData, imageLoaded]);
     
 
     function logout() {
@@ -49,10 +42,7 @@ export default function UserInfo({newChatCallback}) {
         <>
             <div className="user-info">
                 <div className="user-avatar">
-                    {userData.image ? 
-                        <img src={userData.image} alt="imagem do usuário" className="user-icon" /> :
-                        <MdAccountCircle color="white" className="user-icon"/>
-                    }
+                    <img src={userData.image} alt="imagem do usuário" className="user-icon"/>
                     <span>{userData.username}</span>
                 </div>
                 <div className="setting-group">

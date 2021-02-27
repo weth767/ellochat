@@ -10,6 +10,8 @@ export default function ContactGroupList({newChatCallback}) {
     const database = firebase.database();
     const user = useSelector(state => state.user);
     
+    //precisa usar o value no momento que o componente é iniciado
+    // e child_changed a partir dai
     useEffect(() => {
         if (Array.isArray(chats) && chats.length === 0) {
             HashGenerator.generateHash(user.userEmail).then(userEmailHash => {
@@ -21,6 +23,32 @@ export default function ContactGroupList({newChatCallback}) {
                         chatData.forEach(chat => {
                             chatList.push(Object.values(chat));
                         });
+                        chatList.sort((a,b) => {
+                            if (a.datetime > b.datetime) {
+                                return 1;
+                            }
+                            return -1;
+                        })
+                        setChats(chatList);
+                    }
+                })
+            });
+        } else {
+            HashGenerator.generateHash(user.userEmail).then(userEmailHash => {
+                database.ref(`users/${userEmailHash}/chats`).on('child_changed', snapshot => {
+                    let chatData = snapshot.toJSON();
+                    let chatList = [];
+                    if (chatData) {
+                        chatData = Object.values(chatData);
+                        chatData.forEach(chat => {
+                            chatList.push(Object.values(chat));
+                        });
+                        chatList.sort((a,b) => {
+                            if (a.datetime > b.datetime) {
+                                return 1;
+                            }
+                            return -1;
+                        })
                         setChats(chatList);
                     }
                 })
