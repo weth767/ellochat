@@ -22,15 +22,12 @@ export default function PerfilInfo() {
 
     useEffect(() => {
         if (email === '') {
-            setBlocking(true);
             users.where("email", "==", userData.userEmail).get().then((snapshot) => {
                 const user = JSON.parse(snapshot.docs.map(doc => JSON.stringify(doc.data()))[0]);
                 setUsername(user.username);
                 setPhone(user.phone);
                 setEmail(user.email);
                 setStatus(user.status);
-            }).finally(() => {
-                setBlocking(false);
             });
         }
     }, [blocking, email, userData]);
