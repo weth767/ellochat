@@ -10,47 +10,51 @@ import {
     NotificationContainer,
     NotificationManager,
 } from "react-notifications";
-import HashGenerator from '../../utils/hash';
+import { users } from '../../config/firebaseroutes';
 import Logo from "../../assets/ellochat-banner.png";
 import './styles.css';
 
 export default function Login() {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [blocking, setBlocking] = useState(false);
-
     const dispatch = useDispatch();
     const history = useHistory();
+    const [user, setUser] = useState(undefined);
 
-    const database = firebase.database();
-
-    function handleLogin() {
+    async function handleLogin() {
         setBlocking(true);
-        firebase.auth()
+        await firebase.auth()
             .signInWithEmailAndPassword(email, password)
-            .then((_) => {
-               HashGenerator.generateHash(email).then(userEmailHash => {
-                     database.ref(`users/${userEmailHash}`)
-                    .on('value', snapshot => {
-                        dispatch({
-                            type: 'LOGIN',
+            .then(async () => {
+                await users.doc(email).get().then(async (doc) => {
+                    await setUser(doc.data());
+                });
+                await dispatch({
+                    type: 'LOGIN',
+                    payload: {
+                        uid: user.uid,
+                        userEmail: email,
+                        username: user.username,
+                        phone: user.phone,
+                        status: user.status,
+                    }
+                });
+                await firebase.storage()
+                    .ref(`users-pictures/${user.email}`)
+                    .getDownloadURL()
+                    .then(async image => {
+                        await dispatch({
+                            type: 'IMAGE',
                             payload: {
-                                userHash:userEmailHash,
-                                uid: snapshot.val().uid,
-                                userEmail: email,
-                                username: snapshot.val().nickname === "" ?
-                                    snapshot.val().username :
-                                    snapshot.val().nickname,
-                                token: "" //resolver o token
+                                image: image
                             }
                         });
-                        history.push("/");
                     });
-               });
+                await history.push("/");
             }).catch(() => {
-                NotificationManager.error("Erro ao realizar o login, verifique suas credenciais!", "Erro", 1000);
+                NotificationManager.error("Erro ao realizar o login, verifique suas credenciais!",
+                 "Erro", 1000);
             }).finally(() => {
                 setBlocking(false);
             });
@@ -60,7 +64,7 @@ export default function Login() {
         <BlockUi tag="div" blocking={blocking}>
             {useSelector(state => state.user.userLogged) === true ? <Redirect to="/"></Redirect> : null}
             <div className="login-content text-center">
-                <form className="mx-auto col-sm-12 col-md-8 col-lg-5">
+                <form className="mx-auto col-sm-12 col-md-8 col-lg-5" onKeyPress={e => e.key === 'Enter' ? handleLogin() : null}>
                     <img src={Logo} className="login-logo" alt=""></img>
                     <div className="card">
                         <div className="row">
@@ -75,7 +79,7 @@ export default function Login() {
                                         onChange={e => setPassword(e.target.value)} />
                                 </div>
                                 <div className="col-12 col-md-10 ">
-                                    <button type="button" className="btn btn-lg btn-login btn-block" onClick={handleLogin} >Entrar</button>
+                                    <button type="button" className="btn btn-lg btn-login btn-block" onClick={() => handleLogin()} >Entrar</button>
                                 </div>
                             </div>
                         </div>
