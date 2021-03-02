@@ -52,6 +52,11 @@
     color: var(--color-white);
 }
 
+img.chat-content-receiver-text  {
+    width: 30vw;
+    height: 30vh;
+}
+
 .chat-content-sender {
     display: flex;
     align-items: center;
@@ -66,6 +71,11 @@
     text-align: right;
     background-color: var(--color-blue);
     color: var(--color-white);
+}
+
+img.chat-content-sender-text  {
+    width: 30vw;
+    height: 30vh;
 }
 
 .chat-input {
