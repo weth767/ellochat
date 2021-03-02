@@ -28,16 +28,17 @@ export default function ContactGroupList({ newChatCallback }) {
 
     return (
         <div className="contact-group-list">
-            {chats.map((chat,index) => chat &&(
-                    <ContactInfo key={index}
-                        contactName={chat.contactname}
-                        lastMessage={chat.message}
-                        onClick={() => newChatCallback({
-                            email: chat.contactemail,
-                            username: chat.contactname
-                        })}
-                    />
-                ))}
+            {chats.map((chat, index) => chat && (
+                index === chats.length - 1 ? 
+                <ContactInfo key={index}
+                    contactName={chat.contactname}
+                    lastMessage={chat.message}
+                    onClick={() => newChatCallback({
+                        email: chat.contactemail,
+                        username: chat.contactname
+                    })}
+                /> : null
+            ))}
         </div>
     )
 }
