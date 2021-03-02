@@ -19,7 +19,8 @@ export default function ContactList({newChatCallback}) {
                     })
                 });
                 setContacts(contactList);
-            })
+                setDataLoaded(true);
+            });
         }
     }, [userEmail, dataLoaded]);
 

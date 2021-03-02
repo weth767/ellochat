@@ -33,15 +33,24 @@ export default function ChatComponent(props) {
     async function sendMessage() {
         const date = new Date();
         setBlocking(true);
-        const m = {   
+        const m1 = {   
             sender: user.userEmail,
             message: message,
-            datetime: date.getTime()
+            datetime: date.getTime(),
+            contactname: props.contact.username,
+            contactemail: props.contact.email
+        }
+        const m2 = {   
+            sender: user.userEmail,
+            message: message,
+            datetime: date.getTime(),
+            contactname: user.username,
+            contactemail: user.userEmail
         }
         await messages.doc(user.userEmail).collection("contacts")
-                .doc(props.contact.email).collection("messages").add(m);
+                .doc(props.contact.email).collection("messages").add(m1);
         await messages.doc(props.contact.email).collection("contacts")
-                .doc(user.userEmail).collection("messages").add(m);
+                .doc(user.userEmail).collection("messages").add(m2);
         document.getElementById("input").value = "";
         await adjustText()
         setBlocking(false);

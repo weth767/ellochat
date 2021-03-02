@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './styles.css';
-import firebase from "../../config/firebase";
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import { useSelector } from 'react-redux';
@@ -26,12 +25,12 @@ export default function AddContact() {
                 }).then(() => {
                     NotificationManager.success("Contato adicionado com sucesso");
                 }).catch(() => {
-                    NotificationManager.success("Erro ao adicionar contato");
+                    NotificationManager.error("Erro ao adicionar contato");
                 }).finally(() => {
                     setBlocking(false);
                 });
             } else {
-                NotificationManager.success("Erro ao adicionar contato");
+                NotificationManager.error("Erro ao adicionar contato");
                 setBlocking(false);
             }
         }); 
