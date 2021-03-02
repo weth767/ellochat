@@ -15,28 +15,29 @@ export default function ContactGroupList({ newChatCallback }) {
                 docs.forEach(contact => {
                     messages.doc(user.userEmail).collection("contacts")
                     .doc(contact.data().email).collection("messages")
-                    .orderBy("datetime", "asc").onSnapshot(async messageData => {
-                        setChats(messageData.docs.map(doc => doc.data()));
+                    .orderBy("datetime", "asc").onSnapshot(messageData => {
+                        let messages = [];
+                        messageData.docs.forEach(doc => messages.push(doc.data()));
+                        setChats(messages);
                     });
                 });
             });
             setDataLoaded(true);
         }
-        
     }, [chats, user, dataLoaded]);
 
     return (
         <div className="contact-group-list">
-            {chats.length > 0 ? chats.map(chat => (
-                <ContactInfo key={chat[chat.length - 1].datetime}
-                    contactName={chat[chat.length - 1].contactname}
-                    lastMessage={chat[chat.length - 1].message}
-                    onClick={() => newChatCallback({
-                        email: chat[chat.length - 1].contactemail,
-                        username: chat[chat.length - 1].contactname
-                    })}
-                />
-            )): null}
+            {chats.map((chat,index) => chat &&(
+                    <ContactInfo key={index}
+                        contactName={chat.contactname}
+                        lastMessage={chat.message}
+                        onClick={() => newChatCallback({
+                            email: chat.contactemail,
+                            username: chat.contactname
+                        })}
+                    />
+                ))}
         </div>
     )
 }

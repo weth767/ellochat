@@ -14,46 +14,93 @@ export default function ChatComponent(props) {
     const [chats, setChats] = useState([]);
     
     useEffect(() => {
+        setBlocking(true);
         messages.doc(user.userEmail).collection("contacts")
                 .doc(props.contact.email).collection("messages")
                 .orderBy("datetime", "asc").onSnapshot(async messageData => {
                     await setChats(messageData.docs.map(doc => doc.data()));
+                    if (messagesRef.current) {
+                        messagesRef.current.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                        });
+                    }
+                    setBlocking(false);
                 });
     }, [props, user]);
 
-    async function adjustText() {
-        if (messagesRef.current) {
-            messagesRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
+    function sendFile(file) {
+        setBlocking(true);
+        const date = new Date();
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const m1 = {   
+                sender: user.userEmail,
+                message: reader.result,
+                datetime: date.getTime(),
+                contactname: props.contact.username,
+                contactemail: props.contact.email,
+                type: "image"
+            }
+            const m2 = {   
+                sender: user.userEmail,
+                message: reader.result,
+                datetime: date.getTime(),
+                contactname: user.username,
+                contactemail: user.userEmail,
+                type: "image"
+            }
+            document.getElementById("input").value = "";
+            messages.doc(user.userEmail).collection("contacts")
+                .doc(props.contact.email).collection("messages").add(m1).finally(() => {
+                    messages.doc(props.contact.email).collection("contacts")
+                        .doc(user.userEmail).collection("messages").add(m2).finally(() => {
+                            setBlocking(false);
+                            if (messagesRef.current) {
+                                messagesRef.current.scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "start",
+                            });
+                        }
+                    });
+                });
         }
+        reader.readAsDataURL(file[0]);
     }
 
-    async function sendMessage() {
-        const date = new Date();
+    function sendMessage() {
         setBlocking(true);
+        const date = new Date();
         const m1 = {   
             sender: user.userEmail,
             message: message,
             datetime: date.getTime(),
             contactname: props.contact.username,
-            contactemail: props.contact.email
+            contactemail: props.contact.email,
+            type: "text"
         }
         const m2 = {   
             sender: user.userEmail,
             message: message,
             datetime: date.getTime(),
             contactname: user.username,
-            contactemail: user.userEmail
+            contactemail: user.userEmail,
+            type: "text"
         }
-        await messages.doc(user.userEmail).collection("contacts")
-                .doc(props.contact.email).collection("messages").add(m1);
-        await messages.doc(props.contact.email).collection("contacts")
-                .doc(user.userEmail).collection("messages").add(m2);
         document.getElementById("input").value = "";
-        await adjustText()
-        setBlocking(false);
+        messages.doc(user.userEmail).collection("contacts")
+            .doc(props.contact.email).collection("messages").add(m1).finally(() => {
+                messages.doc(props.contact.email).collection("contacts")
+                    .doc(user.userEmail).collection("messages").add(m2).finally(() => {
+                        setBlocking(false);
+                        if (messagesRef.current) {
+                            messagesRef.current.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                        });
+                    }
+                });
+            });
     }
 
     return (
@@ -72,8 +119,14 @@ export default function ChatComponent(props) {
                         {chats.map(m => (
                             <li key={m.datetime} ref={messagesRef}
                                 className={m.sender === user.userEmail ? 'chat-content-sender' : 'chat-content-receiver'}>
-                                <span className={m.sender === user.userEmail ? 'chat-content-sender-text' :
-                                     'chat-content-receiver-text'}>{m.message}</span>
+                                {
+                                    m.type === "image" ? 
+                                        <img src={m.message} alt={"image" + m.datetime} 
+                                            className={m.sender === user.userEmail ? 'chat-content-sender-text' : 
+                                                'chat-content-receiver'}/> : 
+                                        <span className={m.sender === user.userEmail ? 'chat-content-sender-text' :
+                                        'chat-content-receiver-text'}>{m.message}</span>
+                                }
                             </li>
                         ))}
                     </ul>
@@ -83,7 +136,7 @@ export default function ChatComponent(props) {
                         <label htmlFor="file-input">
                             <MdAttachFile color="white" className="chat-input-icons"/>
                         </label>
-                        <input id="file-input" type="file"/>
+                        <input id="file-input" type="file" onChange={e => sendFile(e.target.files)}/>
                     </div>
                     <div className="chat-input-wrapper">
                         <input className="chat-input-input" id="input" placeholder="Digite uma mensagem" 

@@ -52,6 +52,16 @@
     color: var(--color-white);
 }
 
+.chat-content-receiver-image {
+    padding: 1.5vh;
+    border-radius: 5px;
+    text-align: left;
+    background-color: var(--color-lightblue);
+    color: var(--color-white);
+    width: 10vw;
+    height: 10vw;
+}
+
 .chat-content-sender {
     display: flex;
     align-items: center;
@@ -66,6 +76,11 @@
     text-align: right;
     background-color: var(--color-blue);
     color: var(--color-white);
+}
+
+.chat-content-sender-text img {
+    width: 50px !important;
+    height: 30px !important;
 }
 
 .chat-input {
