@@ -148,7 +148,7 @@ export default function ChatComponent(props) {
     function imageComponent(m) {
        return <img src={m.message} alt={"image" + m.datetime} 
              className={m.sender === user.userEmail ? 'chat-content-sender-text' : 
-            'chat-content-receiver'}
+            'chat-content-receiver-text'}
         />
     }
 
