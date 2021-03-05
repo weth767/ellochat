@@ -18,7 +18,7 @@ export default function ContactGroupList({ newChatCallback }) {
                     .orderBy("datetime", "asc").onSnapshot(messageData => {
                         let messages = [];
                         messageData.docs.forEach(doc => messages.push(doc.data()));
-                        setChats(messages);
+                        if (messages.length !== 0) setChats(messages);
                     });
                 });
             });
@@ -32,7 +32,8 @@ export default function ContactGroupList({ newChatCallback }) {
                 index === chats.length - 1 ? 
                 <ContactInfo key={index}
                     contactName={chat.contactname}
-                    lastMessage={chat.message}
+                    lastMessage={chat.type === "image" ? "Imagem" : 
+                        chat.type === "audio" ? "Áudio" : chat.message}
                     onClick={() => newChatCallback({
                         email: chat.contactemail,
                         username: chat.contactname

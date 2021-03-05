@@ -3,7 +3,6 @@ import './styles.css';
 import { MdAccountCircle }  from 'react-icons/md';
 
 export default function ContactInfo(props) {
-    console.log(props);
     return (
         <div className="card contact-info">
             <div className="card-body contact-info-content" onClick={() => props.onClick()}>
