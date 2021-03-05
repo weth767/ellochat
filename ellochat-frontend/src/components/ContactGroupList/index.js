@@ -15,7 +15,7 @@ export default function ContactGroupList({ newChatCallback }) {
                 docs.forEach(contact => {
                     messages.doc(user.userEmail).collection("contacts")
                     .doc(contact.data().email).collection("messages")
-                    .orderBy("datetime", "asc").onSnapshot(messageData => {
+                    .orderBy("datetime", "desc").limit(1).onSnapshot(messageData => {
                         let messages = [];
                         messageData.docs.forEach(doc => messages.push(doc.data()));
                         if (messages.length !== 0) setChats(messages);

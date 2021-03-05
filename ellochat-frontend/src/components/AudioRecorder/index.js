@@ -20,7 +20,11 @@ export default function AudioRecorder(props) {
         } 
 
         const handleData = e => {
-            setAudioURL(URL.createObjectURL(e.data));
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAudioURL(reader.result);
+            }
+            reader.readAsDataURL(e.data);
         };
 
         recorder.addEventListener("dataavailable", handleData);
