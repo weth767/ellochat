@@ -32,8 +32,38 @@ export default function ChatComponent(props) {
     }, [props, user]);
 
     const handleAudioRecorder = (audio) => {
-        console.log(audio);
-        sendFile(audio, "audio");
+        setBlocking(true);
+        const date = new Date();
+        const m1 = {   
+            sender: user.userEmail,
+            message: audio,
+            datetime: date.getTime(),
+            contactname: props.contact.username,
+            contactemail: props.contact.email,
+            type: "audio"
+        }
+        const m2 = {   
+            sender: user.userEmail,
+            message: audio,
+            datetime: date.getTime(),
+            contactname: user.username,
+            contactemail: user.userEmail,
+            type: "audio"
+        }
+        document.getElementById("input").value = "";
+        messages.doc(user.userEmail).collection("contacts")
+            .doc(props.contact.email).collection("messages").add(m1).finally(() => {
+                messages.doc(props.contact.email).collection("contacts")
+                    .doc(user.userEmail).collection("messages").add(m2).finally(() => {
+                        setBlocking(false);
+                        if (messagesRef.current) {
+                            messagesRef.current.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                        });
+                    }
+                });
+            });
     }
 
     function sendFile(file, type) {
@@ -116,14 +146,14 @@ export default function ChatComponent(props) {
     }
 
     function imageComponent(m) {
-        <img src={m.message} alt={"image" + m.datetime} 
+       return <img src={m.message} alt={"image" + m.datetime} 
              className={m.sender === user.userEmail ? 'chat-content-sender-text' : 
             'chat-content-receiver'}
         />
     }
 
     function audioComponent(m) {
-        <audio src={m.message} controls />
+        return <audio src={m.message} controls />
     }
 
     return (

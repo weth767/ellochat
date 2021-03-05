@@ -6,7 +6,6 @@ export default function AudioRecorder(props) {
     const [audioURL, setAudioURL] = useState("");
     const [isRecording, setIsRecording] = useState(false);
     const [recorder, setRecorder] = useState(null);
-    const [audio, setAudio] = useState(null);
 
     useEffect(() => {
         if (recorder === null) {
@@ -22,7 +21,6 @@ export default function AudioRecorder(props) {
 
         const handleData = e => {
             setAudioURL(URL.createObjectURL(e.data));
-            setAudio(e.data);
         };
 
         recorder.addEventListener("dataavailable", handleData);
@@ -40,7 +38,7 @@ export default function AudioRecorder(props) {
     };
 
     async function sendAudio() {
-        props.audioRecorderCallback(audio);
+        props.audioRecorderCallback(audioURL);
     }
 
     async function requestRecorder() {
