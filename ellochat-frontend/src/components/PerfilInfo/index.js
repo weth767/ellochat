@@ -48,6 +48,8 @@ export default function PerfilInfo() {
             dispatch({
                 type: 'LOGIN',
                 payload: {
+                    userEmail:userData.userEmail,
+                    uid:userData.uid,
                     username : username,
                     phone: phone,
                     status: status,
