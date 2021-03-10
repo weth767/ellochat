@@ -14,20 +14,20 @@ export default function ContactGroupList({ newChatCallback }) {
     useEffect(() => {
         if (!dataLoaded) {
             users.doc(user.userEmail).collection('contacts').get().then((docs) => {
+                let chatMessages = [];
                 docs.forEach(contact => {
                     messages.doc(user.userEmail).collection("contacts")
                         .doc(contact.data().email).collection("messages")
-                        .orderBy("datetime", "desc").limit(1).onSnapshot(messageData => {
+                        .orderBy("datetime", "asc").onSnapshot(messageData => {
                             let lastMessage = messageData.docChanges().map(data => data.doc.data());
                             lastMessage = lastMessage[lastMessage.length - 1];
-                            console.log(lastMessage);
                             if (lastMessage.sender !== user.userEmail) NotificationManager.info(lastMessage.message,
                                 lastMessage.sender + " enviou uma mensagem");
-                            let messages = [];
-                            messageData.docs.forEach(doc => messages.push(doc.data()));
-                            if (messages.length !== 0) setChats(messages);
+                            chatMessages.push(messageData.docs.map(doc => doc.data()));
                         });
                 });
+                console.log(chatMessages);
+                setChats(chatMessages);
             });
             setDataLoaded(true);
         }
@@ -36,16 +36,16 @@ export default function ContactGroupList({ newChatCallback }) {
     return (
         <div className="contact-group-list">
             {chats.map((chat, index) => chat && (
-                index === chats.length - 1 ?
-                    <ContactInfo key={index}
-                        contactName={chat.contactname}
-                        lastMessage={chat.type === "image" ? "Imagem" :
-                            chat.type === "audio" ? "Áudio" : chat.message}
-                        onClick={() => newChatCallback({
-                            email: chat.contactemail,
-                            username: chat.contactname
-                        })}
-                    /> : null
+                <ContactInfo key={index}
+                    contactName={chat[chat.length - 1].contactname}
+                    lastMessage={chat[chat.length - 1].type === "image" ? "Imagem" :
+                        chat[chat.length - 1].type === "audio" ? "Áudio" : 
+                        chat[chat.length - 1].message}
+                    onClick={() => newChatCallback({
+                        email: chat[chat.length - 1].contactemail,
+                        username: chat[chat.length - 1].contactname
+                    })}
+                />
             ))
             }
             <NotificationContainer>
