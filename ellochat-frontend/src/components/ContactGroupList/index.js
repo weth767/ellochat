@@ -19,13 +19,14 @@ export default function ContactGroupList({ newChatCallback }) {
                         .doc(contact.data().email).collection("messages")
                         .orderBy("datetime", "desc").limit(1).onSnapshot(messageData => {
                             let lastMessage = messageData.docChanges().map(data => data.doc.data());
-                            lastMessage = lastMessage[lastMessage.length - 1];
-                            console.log(lastMessage);
-                            if (lastMessage.sender !== user.userEmail) NotificationManager.info(lastMessage.message,
-                                lastMessage.sender + " enviou uma mensagem");
-                            let messages = [];
-                            messageData.docs.forEach(doc => messages.push(doc.data()));
-                            if (messages.length !== 0) setChats(messages);
+                            if(lastMessage){
+                                lastMessage = lastMessage[lastMessage.length - 1];
+                                if (lastMessage.sender !== user.userEmail) NotificationManager.info(lastMessage.message,
+                                    lastMessage.sender + " enviou uma mensagem");
+                                let messages = [];
+                                messageData.docs.forEach(doc => messages.push(doc.data()));
+                                if (messages.length !== 0) setChats(messages);
+                            }
                         });
                 });
             });
@@ -39,6 +40,7 @@ export default function ContactGroupList({ newChatCallback }) {
                 index === chats.length - 1 ?
                     <ContactInfo key={index}
                         contactName={chat.contactname}
+                        email={chat.contactemail}
                         lastMessage={chat.type === "image" ? "Imagem" :
                             chat.type === "audio" ? "Áudio" : chat.message}
                         onClick={() => newChatCallback({
