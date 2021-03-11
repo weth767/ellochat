@@ -160,8 +160,8 @@ export default function ChatComponent(props) {
         <BlockUi tag="div" blocking={blocking}>
             <div className="chat">
                 <div className="chat-header">
-                    {props.contact.image ?
-                        <img src={props.contact.image} alt="imagem do usuário" /> :
+                    {props.image ?
+                        <img src={props.image} alt="imagem do usuário" className="contact-icon" /> :
                         <MdAccountCircle color="white" className="user-icon" />
                     }
                     <span>{props.contact.nickname ? props.contact.nickname 

@@ -140,3 +140,9 @@ img.chat-content-sender-text  {
     width: 2vw;
     height: 2vw;
 }
+
+.contact-icon {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+}

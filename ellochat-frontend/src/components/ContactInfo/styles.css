@@ -30,3 +30,9 @@
 .contact-text span {
     font-size: 12px;
 }
+
+.contact-icon {
+    width: 3vw !important;
+    height: 3vw !important;
+    border-radius: 50%;
+}
