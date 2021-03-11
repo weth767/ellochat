@@ -13,6 +13,7 @@ export default function ContactGroupList({ newChatCallback }) {
 
     useEffect(() => {
         if (!dataLoaded) {
+            let contacts = [];
             users.doc(user.userEmail).collection('contacts').get().then((docs) => {
                 docs.forEach(contact => {
                     messages.doc(user.userEmail).collection("contacts")
@@ -21,15 +22,18 @@ export default function ContactGroupList({ newChatCallback }) {
                             let lastMessage = messageData.docChanges().map(data => data.doc.data());
                             if(lastMessage){
                                 lastMessage = lastMessage[lastMessage.length - 1];
-                                if (lastMessage.sender !== user.userEmail) NotificationManager.info(lastMessage.message,
-                                    lastMessage.sender + " enviou uma mensagem");
-                                let messages = [];
-                                messageData.docs.forEach(doc => messages.push(doc.data()));
-                                if (messages.length !== 0) setChats(messages);
+                                if (lastMessage.sender !== user.userEmail){
+                                    NotificationManager.info(lastMessage.message,lastMessage.sender + " enviou uma mensagem");
+                                }
+                                if(!contacts.find(c => c.contactemail === lastMessage.contactemail)){
+                                    contacts.push(lastMessage);
+                                }
+                                
                             }
                         });
                 });
             });
+            setChats(contacts);
             setDataLoaded(true);
         }
     }, [chats, user, dataLoaded]);
@@ -37,17 +41,17 @@ export default function ContactGroupList({ newChatCallback }) {
     return (
         <div className="contact-group-list">
             {chats.map((chat, index) => chat && (
-                index === chats.length - 1 ?
+               
                     <ContactInfo key={index}
                         contactName={chat.contactname}
                         email={chat.contactemail}
                         lastMessage={chat.type === "image" ? "Imagem" :
-                            chat.type === "audio" ? "Áudio" : chat.message}
+                            chat.type === "audio" ? "Áudio" : "Oi, estou usando o Ellochat"}
                         onClick={() => newChatCallback({
                             email: chat.contactemail,
                             username: chat.contactname
                         })}
-                    /> : null
+                    /> 
             ))
             }
             <NotificationContainer>
