@@ -46,7 +46,7 @@ export default function ContactGroupList({ newChatCallback }) {
                         contactName={chat.contactname}
                         email={chat.contactemail}
                         lastMessage={chat.type === "image" ? "Imagem" :
-                            chat.type === "audio" ? "Áudio" : chat.message}
+                            chat.type === "audio" ? "Áudio" : "Ellochat"}
                         onClick={() => newChatCallback({
                             email: chat.contactemail,
                             username: chat.contactname
