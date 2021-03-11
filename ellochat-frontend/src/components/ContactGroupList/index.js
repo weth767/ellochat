@@ -13,6 +13,7 @@ export default function ContactGroupList({ newChatCallback }) {
 
     useEffect(() => {
         if (!dataLoaded) {
+            let contacts = [];
             users.doc(user.userEmail).collection('contacts').get().then((docs) => {
                 docs.forEach(contact => {
                     messages.doc(user.userEmail).collection("contacts")
@@ -21,15 +22,15 @@ export default function ContactGroupList({ newChatCallback }) {
                             let lastMessage = messageData.docChanges().map(data => data.doc.data());
                             if(lastMessage){
                                 lastMessage = lastMessage[lastMessage.length - 1];
-                                if (lastMessage.sender !== user.userEmail) NotificationManager.info(lastMessage.message,
-                                    lastMessage.sender + " enviou uma mensagem");
-                                let messages = [];
-                                messageData.docs.forEach(doc => messages.push(doc.data()));
-                                if (messages.length !== 0) setChats(messages);
+                                if (lastMessage.sender !== user.userEmail){
+                                    NotificationManager.info(lastMessage.message,lastMessage.sender + " enviou uma mensagem");
+                                }
+                                contacts.push(lastMessage);
                             }
                         });
                 });
             });
+            setChats(contacts);
             setDataLoaded(true);
         }
     }, [chats, user, dataLoaded]);
@@ -37,7 +38,7 @@ export default function ContactGroupList({ newChatCallback }) {
     return (
         <div className="contact-group-list">
             {chats.map((chat, index) => chat && (
-                index === chats.length - 1 ?
+               
                     <ContactInfo key={index}
                         contactName={chat.contactname}
                         email={chat.contactemail}
@@ -47,7 +48,7 @@ export default function ContactGroupList({ newChatCallback }) {
                             email: chat.contactemail,
                             username: chat.contactname
                         })}
-                    /> : null
+                    /> 
             ))
             }
             <NotificationContainer>
