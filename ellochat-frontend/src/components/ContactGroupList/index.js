@@ -25,7 +25,10 @@ export default function ContactGroupList({ newChatCallback }) {
                                 if (lastMessage.sender !== user.userEmail){
                                     NotificationManager.info(lastMessage.message,lastMessage.sender + " enviou uma mensagem");
                                 }
-                                contacts.push(lastMessage);
+                                if(!contacts.find(c => c.contactemail === lastMessage.contactemail)){
+                                    contacts.push(lastMessage);
+                                }
+                                
                             }
                         });
                 });
