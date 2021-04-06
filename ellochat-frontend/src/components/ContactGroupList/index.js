@@ -20,13 +20,15 @@ export default function ContactGroupList({ newChatCallback }) {
                         .doc(contact.data().email).collection("messages")
                         .orderBy("datetime", "desc").limit(1).onSnapshot(messageData => {
                             let lastMessage = messageData.docChanges().map(data => data.doc.data());
-                            if (lastMessage) {
+                            if(lastMessage){
                                 lastMessage = lastMessage[lastMessage.length - 1];
-                                if (lastMessage.sender !== user.userEmail){
-                                    NotificationManager.info(lastMessage.message);
-                                }
-                                if (!contacts.find(contact => contact.contactemail === lastMessage.contactemail)){
-                                    contacts.push(lastMessage);
+                                if(lastMessage){
+                                    if (lastMessage.sender !== user.userEmail){
+                                        NotificationManager.info(lastMessage.message,lastMessage.sender + " enviou uma mensagem");
+                                    }
+                                    if(!contacts.find(c => c.contactemail === lastMessage.contactemail)){
+                                        contacts.push(lastMessage);
+                                    }
                                 }
                             }
                         });
